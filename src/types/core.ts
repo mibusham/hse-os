@@ -119,3 +119,43 @@ export interface ManHoursLog {
   ltiCount: number;
 }
 
+export interface WorkerRecord {
+  id: string;
+  fullName: string;
+  documentType: 'IC' | 'PASSPORT';
+  documentNo: string;
+  nationality: string;
+  trade: string;
+  subcontractor: string;
+  cidbGreenCardNo: string;
+  greenCardExpiry: string;
+  inductionDate: string;
+  hasPassedInduction: boolean;
+  bloodType?: string;
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  photoUrl?: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'BARRED';
+  notes?: string;
+}
+
+export interface TradeItem {
+  id: string;
+  name: string;
+  count: number;
+  subcon?: string;
+}
+
+export interface DailyManpowerEntry {
+  id: string;
+  date: string; // YYYY-MM-DD
+  trades: TradeItem[];
+  totalWorkers: number;
+  recordedBy: string;
+  shift: 'DAY' | 'NIGHT';
+  weatherMorning?: string;
+  weatherAfternoon?: string;
+  notes?: string;
+  createdAt: string;
+}
+

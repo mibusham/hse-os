@@ -180,6 +180,7 @@ export class HSECoreEngine {
       waterSamples?: any[];
       fogging?: any[];
       dutyHolders?: any[];
+      workers?: any[];
     }
   ): {
     advisories: AICoreAdvisory[];
@@ -206,6 +207,7 @@ export class HSECoreEngine {
     let waterSamples = liveData?.waterSamples;
     let fogging = liveData?.fogging;
     let dutyHolders = liveData?.dutyHolders;
+    let workers = liveData?.workers;
 
     try {
       if (!ptws) {
@@ -232,6 +234,10 @@ export class HSECoreEngine {
         const stored = localStorage.getItem('hse_os_cdm_duty_holders');
         if (stored) dutyHolders = JSON.parse(stored);
       }
+      if (!workers) {
+        const stored = localStorage.getItem('hse_os_site_workers_directory');
+        if (stored) workers = JSON.parse(stored);
+      }
     } catch (e) {}
 
     ptws = ptws || [];
@@ -240,6 +246,7 @@ export class HSECoreEngine {
     waterSamples = waterSamples || [];
     fogging = fogging || [];
     dutyHolders = dutyHolders || [];
+    workers = workers || [];
 
     // 1. PILLAR 1 DOSH AUDIT: 7-Day Inspection Red Tags
     const redTags = inspections.filter((i: any) => i.status === 'REJECT_RED_TAG');
@@ -335,6 +342,38 @@ export class HSECoreEngine {
         statutoryReference: 'Peraturan 8 CDM 2024 • Seksyen 34B OSHA 1994',
         suggestedAction: 'Buka Pillar 2 & cetak PDF rasmi Borang JKKP 103',
         actionRoute: 'cdm_studio',
+        timestamp,
+      });
+    }
+
+    // 7. WORKER REGISTRY AUDIT: Expired CIDB Green Cards or Missing Induction
+    const todayDate = new Date().toISOString().split('T')[0];
+    const expiredCards = workers.filter((w: any) => w.status === 'ACTIVE' && w.greenCardExpiry && w.greenCardExpiry < todayDate);
+    if (expiredCards.length > 0) {
+      advisories.push({
+        id: 'adv-worker-cidb-expired',
+        severity: 'CRITICAL',
+        pillar: 'CORPORATE',
+        title: `⚠️ Kad Hijau CIDB Tamat Tempoh Dikesan (${expiredCards.length} Pekerja Aktif)!`,
+        description: `Pekerja (${expiredCards.map((w: any) => w.fullName).slice(0, 3).join(', ')}${expiredCards.length > 3 ? '...' : ''}) memiliki Kad Hijau yang telah luput. Mengikut Akta 520 CIDB & OSHA 2022 Seksyen 15, pekerja tanpa pendaftaran sah dilarang berada di zon operasi.`,
+        statutoryReference: 'Akta Lembaga Pembangunan Industri Pembinaan Malaysia 1994 (Akta 520) • Seksyen 33',
+        suggestedAction: 'Buka Direktori Pekerja & kemaskini tarikh luput Kad Hijau',
+        actionRoute: 'workers_db',
+        timestamp,
+      });
+    }
+
+    const uninductedWorkers = workers.filter((w: any) => w.status === 'ACTIVE' && !w.hasPassedInduction);
+    if (uninductedWorkers.length > 0) {
+      advisories.push({
+        id: 'adv-worker-no-induction',
+        severity: 'WARNING',
+        pillar: 'DOSH',
+        title: `Pekerja Belum Lulus Induksi Keselamatan (${uninductedWorkers.length} Orang)`,
+        description: `Pekerja baharu (${uninductedWorkers.map((w: any) => w.fullName).slice(0, 3).join(', ')}) belum menjalani taklimat induksi tapak. Wajib disaring sebelum dibenarkan memulakan kerja fizikal.`,
+        statutoryReference: 'OSHA 1994 (Pindaan 2022) • Seksyen 15 Kewajipan Am Majikan',
+        suggestedAction: 'Jalankan taklimat induksi tapak & rekodkan kelulusan',
+        actionRoute: 'workers_db',
         timestamp,
       });
     }

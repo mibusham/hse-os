@@ -8,6 +8,8 @@ import type { NavPillarId } from './components/layout/SidebarCommandRail';
 import CoreBrainHeader from './components/layout/CoreBrainHeader';
 import ActionRadarPane from './components/layout/ActionRadarPane';
 import ExecutiveMatrixView from './components/views/ExecutiveMatrixView';
+import DailyManpowerView from './components/views/DailyManpowerView';
+import WorkerDirectoryView from './components/views/WorkerDirectoryView';
 import DoshOpsPillarView from './components/views/DoshOpsPillarView';
 import CdmStudioPillarView from './components/views/CdmStudioPillarView';
 import DoeEnvPillarView from './components/views/DoeEnvPillarView';
@@ -100,6 +102,10 @@ export const App: React.FC = () => {
   };
 
   const handleActionClick = (adv: any) => {
+    if (adv.actionRoute) {
+      setActivePillar(adv.actionRoute as NavPillarId);
+      return;
+    }
     if (adv.pillar === 'DOSH') setActivePillar('dosh_ops');
     else if (adv.pillar === 'CDM') setActivePillar('cdm_studio');
     else if (adv.pillar === 'DOE') setActivePillar('doe_env');
@@ -123,6 +129,7 @@ export const App: React.FC = () => {
           doe: advisories.filter(a => a.pillar === 'DOE').length,
           health: advisories.filter(a => a.pillar === 'HEALTH').length,
           corporate: advisories.filter(a => a.pillar === 'CORPORATE').length,
+          workers: advisories.filter(a => a.actionRoute === 'workers_db').length,
         }}
       />
 
@@ -148,6 +155,14 @@ export const App: React.FC = () => {
               complianceScore={coreAudit.complianceScore}
               advisoriesCount={advisories.length}
             />
+          )}
+
+          {activePillar === 'daily_manpower' && (
+            <DailyManpowerView project={project} />
+          )}
+
+          {activePillar === 'workers_db' && (
+            <WorkerDirectoryView project={project} />
           )}
 
           {activePillar === 'dosh_ops' && (
