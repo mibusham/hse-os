@@ -24,7 +24,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
   const [workerCount, setWorkerCount] = useState<number>(35);
   const [workDays, setWorkDays] = useState<number>(26);
   const [hoursPerDay, setHoursPerDay] = useState<number>(8);
-  const [monthName, setMonthName] = useState<string>('Oktober 2026');
+  const [monthName, setMonthName] = useState<string>('October 2026');
   const [manHoursLogs, setManHoursLogs] = useState<ManHoursLog[]>(() => {
     return ProjectService.loadData<ManHoursLog[]>('manhours_logs', []);
   });
@@ -72,13 +72,13 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
       locationZone: newLocation,
       subcontractor: newSubcon.toUpperCase(),
       startDate: today,
-      validUntil: `${newValidHours} Hari Ini`,
+      validUntil: `${newValidHours} Today`,
       status: 'ACTIVE',
       authorizedBy: 'SHO / SSS Digital Endorsement',
       riskPrecautions: [
-        'HIRADC diterangkan dalam taklimat toolbox',
-        'Penguatkuasaan 100% PPE mandatori (Hard hat, safety harness & boots)',
-        'Kawasan kerja dibariskan pita amaran keselamatan'
+        'HIRADC communicated in toolbox briefing',
+        '100% Mandatory PPE enforcement (Hard hat, safety harness & boots)',
+        'Work area demarcated with safety barrier tape'
       ],
       createdAt: new Date().toISOString()
     };
@@ -115,7 +115,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
       lastInspectionDate: todayStr,
       nextDueDate: nextDueStr,
       status: newInspStatus,
-      remarks: newInspRemarks || 'Pemeriksaan fizikal memuaskan mengikut garis panduan JKKP.'
+      remarks: newInspRemarks || 'Physical inspection satisfactory in accordance with DOSH / statutory guidelines.'
     };
     setInspectionList([newRecord, ...inspectionList]);
     setShowInspectionModal(false);
@@ -151,7 +151,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
       ltiCount: 0
     };
     setManHoursLogs([newLog, ...manHoursLogs.filter(l => l.monthYear !== monthName)]);
-    alert(`Log Jam Kerja Selamat bagi ${monthName} berjaya direkodkan (${totalMonthlyManHours.toLocaleString()} jam)!`);
+    alert(`Safe Man-Hours log for ${monthName} successfully recorded (${totalMonthlyManHours.toLocaleString()} hrs)!`);
   };
 
   return (
@@ -165,13 +165,13 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               <HardHat size={12} /> Statutory Pillar 1
             </span>
             <span className="text-xs text-slate-500 font-mono">•</span>
-            <span className="text-xs font-mono text-slate-400 font-bold">DOSH / JKKP Statutory &amp; Site Ops</span>
+            <span className="text-xs font-mono text-slate-400 font-bold">DOSH Statutory &amp; Site Ops</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-            Operasi Kawalan Risiko &amp; Pematuhan OSHA 1994 (Pindaan 2022) / CDM 2024
+            Risk Control &amp; Statutory Compliance (OSHA 1994 / CDM 2024)
           </h2>
           <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            Pengurusan permit kerja berisiko tinggi (PTW), rekod perancah pusingan 7-hari berkanun, integriti kekuda bumbung, dan rekod jam kerja selamat (A × B × C = D).
+            High-risk Permit to Work (PTW) management, 7-day cyclical scaffold inspections, roof truss structural integrity, and cumulative safe man-hours ledger (A × B × C = D).
           </p>
         </div>
 
@@ -184,7 +184,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               className="px-5 py-2.5 rounded-2xl bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-rose-500/20 active:scale-95 transition-all"
             >
               <Plus size={16} />
-              <span>Keluarkan PTW Baru</span>
+              <span>Issue New PTW</span>
             </button>
           )}
 
@@ -195,7 +195,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               className="px-5 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-amber-400/20 active:scale-95 transition-all"
             >
               <Plus size={16} />
-              <span>+ Tag Pemeriksaan Baru</span>
+              <span>+ Record Inspection Tag</span>
             </button>
           )}
         </div>
@@ -205,7 +205,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
         {[
           { id: 'PTW', label: 'Permit To Work (PTW)', count: ptwList.length, icon: FileCheck },
-          { id: 'INSPECTIONS', label: 'Pemeriksaan 7-Hari (OSHA 2022)', count: inspectionList.length, icon: Layers },
+          { id: 'INSPECTIONS', label: '7-Day Inspection (OSHA 2022)', count: inspectionList.length, icon: Layers },
           { id: 'MANHOURS', label: 'Safe Man-Hours (A×B×C=D)', count: manHoursLogs.length, icon: Clock },
         ].map(tab => {
           const Icon = tab.icon;
@@ -238,19 +238,19 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">PTW Aktif Hari Ini</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Active PTWs Today</span>
               <p className="text-2xl font-black text-emerald-400 mt-1">{ptwList.filter(p => p.status === 'ACTIVE').length}</p>
-              <span className="text-[10px] text-slate-500">Kebenaran sah di tapak</span>
+              <span className="text-[10px] text-slate-500">Valid on-site authorizations</span>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Permit Ditutup / Tamat</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Permits Closed / Expired</span>
               <p className="text-2xl font-black text-slate-400 mt-1">{ptwList.filter(p => p.status === 'CLOSED' || p.status === 'EXPIRED').length}</p>
-              <span className="text-[10px] text-slate-500">Kerja siap atau dibatalkan</span>
+              <span className="text-[10px] text-slate-500">Completed or revoked</span>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Pengesah Ditauliahkan (SHO / SSS)</span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Authorized Endorser (SHO / SSS)</span>
               <p className="text-sm font-bold text-white mt-1.5 truncate">Ir. Razak (Green Book)</p>
-              <span className="text-[10px] text-slate-500">Pematuhan Seksyen 29 Akta OSHA 1994</span>
+              <span className="text-[10px] text-slate-500">Section 29 OSHA 1994 Compliance</span>
             </div>
           </div>
 
@@ -259,9 +259,9 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
             {ptwList.length === 0 ? (
               <div className="bg-slate-900 border-2 border-dashed border-slate-800 rounded-3xl p-12 text-center space-y-3">
                 <FileCheck size={36} className="text-slate-600 mx-auto" />
-                <h4 className="text-sm font-bold text-slate-300">Tiada Permit To Work (PTW) Aktif Buat Masa Ini</h4>
+                <h4 className="text-sm font-bold text-slate-300">No Active Permits To Work (PTW) At This Time</h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Semua kerja harian memerlukan permit khas. Klik butang <strong>"Keluarkan PTW Baru"</strong> di atas untuk memulakan permohonan permit kerja sebenar tapak.
+                  All high-risk site works require valid authorization. Click <strong>"Issue New PTW"</strong> above to initiate a site work permit application.
                 </p>
               </div>
             ) : (
@@ -291,24 +291,24 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                         {ptw.status}
                       </span>
                       <span className="text-[10px] text-slate-400 font-mono">
-                        Sah: {ptw.validUntil}
+                        Valid: {ptw.validUntil}
                       </span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Lokasi Tapak:</span>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Site Location:</span>
                       <p className="text-slate-200 font-medium mt-0.5">{ptw.locationZone}</p>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Subkontraktor:</span>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Subcontractor:</span>
                       <p className="text-slate-200 font-medium mt-0.5">{ptw.subcontractor}</p>
                     </div>
                   </div>
 
                   <div className="bg-slate-950/60 p-3 rounded-xl space-y-1">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block">Langkah Kawalan Wajib:</span>
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider block">Mandatory Control Measures:</span>
                     <div className="flex flex-wrap gap-1.5 pt-0.5">
                       {ptw.riskPrecautions.map((pre, idx) => (
                         <span key={idx} className="text-[10px] text-slate-300 bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-700 flex items-center gap-1">
@@ -329,14 +329,14 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                             onClick={() => handleUpdatePtwStatus(ptw.id, 'CLOSED')}
                             className="px-3 py-1 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold flex items-center gap-1 transition-all"
                           >
-                            <Check size={12} /> Tutup Permit (Kerja Siap)
+                            <Check size={12} /> Close Permit (Work Done)
                           </button>
                           <button
                             type="button"
                             onClick={() => handleUpdatePtwStatus(ptw.id, 'EXPIRED')}
                             className="px-3 py-1 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[11px] font-bold flex items-center gap-1 transition-all"
                           >
-                            <XCircle size={12} /> Batal / Stop Work
+                            <XCircle size={12} /> Revoke / Stop Work
                           </button>
                         </>
                       )}
@@ -346,7 +346,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                           onClick={() => handleUpdatePtwStatus(ptw.id, 'ACTIVE')}
                           className="px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] font-bold flex items-center gap-1 transition-all"
                         >
-                          <RefreshCw size={12} /> Aktifkan Semula Permit
+                          <RefreshCw size={12} /> Reactivate Permit
                         </button>
                       )}
                     </div>
@@ -355,7 +355,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                       type="button"
                       onClick={() => handleDeletePtw(ptw.id)}
                       className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
-                      title="Padam Permit"
+                      title="Delete Permit"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -376,9 +376,9 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                 <AlertTriangle size={20} />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white">Pemeriksaan Perancah &amp; Struktur 7-Hari (OSHA 1994 Pindaan 2022)</h4>
+                <h4 className="text-xs font-bold text-white">7-Day Scaffolding &amp; Structural Inspection (OSHA 1994 Amendment 2022)</h4>
                 <p className="text-[11px] text-slate-400 mt-0.5">
-                  Wajib diperiksa oleh Orang Yang Kompeten (Designated Person / Scaffolder) sekurang-kurangnya sekali setiap 7 hari atau selepas cuaca buruk.
+                  Must be inspected by a Designated Person / Competent Scaffolder at least once every 7 days or after adverse weather.
                 </p>
               </div>
             </div>
@@ -388,7 +388,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               onClick={() => setShowInspectionModal(true)}
               className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
             >
-              <Plus size={14} /> Rekod Tag Baru
+              <Plus size={14} /> + Record Inspection Tag
             </button>
           </div>
 
@@ -396,9 +396,9 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
             {inspectionList.length === 0 ? (
               <div className="col-span-full bg-slate-900 border-2 border-dashed border-slate-800 rounded-3xl p-12 text-center space-y-3">
                 <Layers size={36} className="text-slate-600 mx-auto" />
-                <h4 className="text-sm font-bold text-slate-300">Tiada Tag Pemeriksaan 7-Hari Direkodkan</h4>
+                <h4 className="text-sm font-bold text-slate-300">No 7-Day Inspection Tags Recorded</h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  Belum ada log perancah atau jentera direkodkan. Klik butang <strong>"Rekod Tag Baru"</strong> di atas untuk memulakan pendaftaran tag mingguan.
+                  No scaffolding or machinery inspection tags logged yet. Click <strong>"+ Record Inspection Tag"</strong> above to register weekly tags.
                 </p>
               </div>
             ) : (
@@ -416,9 +416,9 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                           ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20' 
                           : 'bg-rose-500/10 text-rose-400 border-rose-500/30 animate-pulse hover:bg-rose-500/20'
                       }`}
-                      title="Klik untuk tukar status tag"
+                      title="Click to toggle tag status"
                     >
-                      {insp.status === 'SAFE_GREEN_TAG' ? 'GREEN TAG (SELAMAT)' : 'RED TAG (STOP WORK)'}
+                      {insp.status === 'SAFE_GREEN_TAG' ? 'GREEN TAG (SAFE)' : 'RED TAG (STOP WORK)'}
                     </button>
                   </div>
 
@@ -432,23 +432,23 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
 
                   <div className="pt-2 border-t border-slate-800 space-y-1 text-[10px]">
                     <div className="flex justify-between text-slate-400">
-                      <span>Pemeriksaan Terakhir:</span>
+                      <span>Last Inspection:</span>
                       <span className="font-mono text-slate-300">{insp.lastInspectionDate}</span>
                     </div>
                     <div className="flex justify-between text-slate-400">
-                      <span>Tarikh Luput (7 Hari):</span>
+                      <span>Due Date (7 Days):</span>
                       <span className={`font-mono font-bold ${insp.status === 'REJECT_RED_TAG' ? 'text-rose-400' : 'text-emerald-400'}`}>
                         {insp.nextDueDate}
                       </span>
                     </div>
                     <div className="flex justify-between text-slate-400 pt-1">
-                      <span>Pemeriksa:</span>
+                      <span>Inspector:</span>
                       <span className="text-slate-300 font-medium truncate max-w-[140px]">{insp.inspectorName}</span>
                     </div>
                   </div>
 
                   <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-                    <span className="text-[9px] text-slate-500">Klik tag untuk ubah status</span>
+                    <span className="text-[9px] text-slate-500">Click tag to switch status</span>
                     <button
                       type="button"
                       onClick={() => handleDeleteInspection(insp.id)}
@@ -470,10 +470,10 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="text-base font-black text-white uppercase tracking-wide">
-                Formula Statutori DOSH: Rekod Jam Kerja Selamat (Safe Man-Hours)
+                DOSH Statutory Formula: Safe Man-Hours Ledger
               </h3>
               <p className="text-xs text-slate-400">
-                Pengiraan rasmi bulanan DOSH: <strong>A (Pekerja) × B (Hari Sebulan) × C (Jam Sehari) = D (Jumlah Man-Hours)</strong>.
+                Official monthly DOSH calculation: <strong>A (Workers) × B (Days/Month) × C (Hours/Day) = D (Total Man-Hours)</strong>.
               </p>
             </div>
             
@@ -483,14 +483,14 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               className="px-5 py-2.5 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-emerald-400/20 active:scale-95 transition-all self-start sm:self-auto"
             >
               <Save size={16} />
-              <span>Simpan Log Bulan Ini</span>
+              <span>Save Current Month Log</span>
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 p-5 bg-slate-950/60 border border-slate-800 rounded-2xl items-center">
             <div>
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Bulan &amp; Tahun
+                Month &amp; Year
               </label>
               <input 
                 type="text" 
@@ -501,7 +501,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
             </div>
             <div>
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                A. Bilangan Pekerja (Avg/Day)
+                A. Number of Workers (Avg/Day)
               </label>
               <input 
                 type="number" 
@@ -512,7 +512,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
             </div>
             <div>
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                B. Hari Bekerja (Days/Mo)
+                B. Working Days (Days/Mo)
               </label>
               <input 
                 type="number" 
@@ -523,7 +523,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
             </div>
             <div>
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                C. Jam Sehari (Hours/Day)
+                C. Daily Hours (Hours/Day)
               </label>
               <input 
                 type="number" 
@@ -534,37 +534,37 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
             </div>
             <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-center">
               <span className="text-[10px] font-black uppercase text-emerald-400 tracking-wider block">
-                D. Man-Hours Bulan Ini
+                D. Monthly Man-Hours
               </span>
               <p className="text-xl font-black text-emerald-400 mt-0.5 font-mono">
                 {totalMonthlyManHours.toLocaleString()}
               </p>
-              <span className="text-[9px] text-slate-400 font-bold">Jam Bekerja Selamat</span>
+              <span className="text-[9px] text-slate-400 font-bold">Safe Working Hours</span>
             </div>
           </div>
 
           {/* Historical Man-Hours Log Table */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <Calendar size={14} className="text-emerald-400" /> Lejar Jam Bekerja Selamat Terkumpul (Cumulative Ledger)
+              <Calendar size={14} className="text-emerald-400" /> Cumulative Safe Man-Hours Ledger
             </h4>
 
             {manHoursLogs.length === 0 ? (
               <p className="text-xs text-slate-500 italic p-4 bg-slate-950/40 rounded-xl border border-slate-800">
-                Belum ada rekod bulanan disimpan. Tekan "Simpan Log Bulan Ini" di atas untuk menyimpan kiraan bulan semasa.
+                No monthly records saved yet. Click "Save Current Month Log" above to record current month statistics.
               </p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border border-slate-800 rounded-xl overflow-hidden">
                   <thead className="bg-slate-950 text-slate-400 uppercase text-[10px] font-mono">
                     <tr>
-                      <th className="p-3">Bulan</th>
-                      <th className="p-3">Pekerja Purata (A)</th>
-                      <th className="p-3">Hari (B)</th>
-                      <th className="p-3">Jam/Hari (C)</th>
-                      <th className="p-3 text-right">Jam Sebulan (D)</th>
+                      <th className="p-3">Month</th>
+                      <th className="p-3">Avg Workers (A)</th>
+                      <th className="p-3">Days (B)</th>
+                      <th className="p-3">Hours/Day (C)</th>
+                      <th className="p-3 text-right">Monthly Hours (D)</th>
                       <th className="p-3 text-center">LTI</th>
-                      <th className="p-3 text-right">Tindakan</th>
+                      <th className="p-3 text-right">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800 font-mono">
@@ -577,7 +577,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                         <td className="p-3 text-right font-black text-emerald-400">{log.totalMonthlyManHours.toLocaleString()}</td>
                         <td className="p-3 text-center">
                           <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            0 SIFAR
+                            0 ZERO
                           </span>
                         </td>
                         <td className="p-3 text-right">
@@ -599,13 +599,13 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
         </div>
       )}
 
-      {/* MODAL: KELUARKAN PTW BARU */}
+      {/* MODAL: ISSUE NEW PTW */}
       {showNewPtwModal && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-black text-white flex items-center gap-2">
-                <Plus size={18} className="text-rose-400" /> Keluarkan Permit To Work (PTW) Baharu
+                <Plus size={18} className="text-rose-400" /> Issue New Permit To Work (PTW)
               </h3>
               <button 
                 onClick={() => setShowNewPtwModal(false)}
@@ -617,26 +617,26 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
 
             <form onSubmit={handleCreatePTW} className="space-y-4">
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Jenis Aktiviti Berisiko Tinggi *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">High-Risk Activity Type *</label>
                 <select 
                   value={newActivity}
                   onChange={e => setNewActivity(e.target.value as any)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-rose-400"
                 >
-                  <option value="WORKING_AT_HEIGHT">WORKING AT HEIGHT (Kerja Di Tempat Tinggi / Kekuda Bumbung)</option>
-                  <option value="HOT_WORK">HOT WORK (Kimpalan / Oxy-Cutting)</option>
-                  <option value="EXCAVATION">EXCAVATION (Pengorekan Parit / Longkang Utama)</option>
-                  <option value="LIFTING">HEAVY LIFTING (Pemasangan Konkrit Pratuang / Mobile Crane)</option>
-                  <option value="CONFINED_SPACE">CONFINED SPACE (Ruang Terkurung / Manhole Kumbahan)</option>
-                  <option value="ELECTRICAL">ELECTRICAL (Penyambungan Panel Elektrik Voltan Tinggi)</option>
+                  <option value="WORKING_AT_HEIGHT">WORKING AT HEIGHT (Working at Height / Roof Truss)</option>
+                  <option value="HOT_WORK">HOT WORK (Welding / Oxy-Cutting)</option>
+                  <option value="EXCAVATION">EXCAVATION (Trenching / Deep Drainage)</option>
+                  <option value="LIFTING">HEAVY LIFTING (Precast Concrete / Mobile Crane)</option>
+                  <option value="CONFINED_SPACE">CONFINED SPACE (Confined Space / Sewer Manhole)</option>
+                  <option value="ELECTRICAL">ELECTRICAL (High Voltage Distribution Board)</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nama Subkontraktor *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Subcontractor Name *</label>
                 <input 
                   type="text"
-                  placeholder="cth: SYARIKAT PEMBINAAN MAJU JAYA SDN BHD"
+                  placeholder="e.g. MAJU JAYA CONSTRUCTION SDN BHD"
                   value={newSubcon}
                   onChange={e => setNewSubcon(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-rose-400 uppercase"
@@ -645,10 +645,10 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Lokasi Khusus Di Tapak (Lot / Zon) *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Specific Site Location (Lot / Zone) *</label>
                 <input 
                   type="text"
-                  placeholder="cth: Unit 21 - 35, Fasa 2A (Pemasangan Bumbung)"
+                  placeholder="e.g. Unit 21 - 35, Phase 2A (Roof Truss Installation)"
                   value={newLocation}
                   onChange={e => setNewLocation(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-rose-400"
@@ -657,10 +657,10 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Tempoh Sah Sehingga *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Valid Until (Time) *</label>
                 <input 
                   type="text"
-                  placeholder="cth: 19:00"
+                  placeholder="e.g. 19:00"
                   value={newValidHours}
                   onChange={e => setNewValidHours(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-rose-400"
@@ -674,13 +674,13 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                   onClick={() => setShowNewPtwModal(false)}
                   className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-rose-400 hover:bg-rose-300 uppercase tracking-wider shadow-lg shadow-rose-400/20"
                 >
-                  Sahkan &amp; Endorse PTW
+                  Authorize &amp; Endorse PTW
                 </button>
               </div>
             </form>
@@ -688,13 +688,13 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
         </div>
       )}
 
-      {/* MODAL: DAFTAR TAG PEMERIKSAAN 7-HARI BARU */}
+      {/* MODAL: RECORD NEW 7-DAY INSPECTION TAG */}
       {showInspectionModal && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-black text-white flex items-center gap-2">
-                <Layers size={18} className="text-amber-400" /> Rekod Tag Pemeriksaan 7-Hari Baru
+                <Layers size={18} className="text-amber-400" /> Record New 7-Day Inspection Tag
               </h3>
               <button 
                 onClick={() => setShowInspectionModal(false)}
@@ -706,25 +706,25 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
 
             <form onSubmit={handleCreateInspection} className="space-y-4">
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Item / Struktur Diperiksa *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Item / Structure Inspected *</label>
                 <select 
                   value={newInspItem}
                   onChange={e => setNewInspItem(e.target.value as any)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-amber-400"
                 >
-                  <option value="SCAFFOLDING_FRAME">TUBULAR FRAME SCAFFOLDING (Perancah Kerja Luaran)</option>
-                  <option value="MOBILE_CRANE_BACKHOE">MOBILE CRANE / BACKHOE (Jentera Berat &amp; Loji)</option>
-                  <option value="ELECTRICAL_DB">ELECTRICAL DB &amp; ELCB (Peti Agihan Elektrik Tapak)</option>
-                  <option value="ROOF_SAFETY_LINE">ROOF SAFETY LINE &amp; ANCHOR (Talian Hayat Bumbung)</option>
-                  <option value="SILT_TRAP_ESCP">SILT TRAP &amp; EARTH DRAIN (Perangkap Kelodak)</option>
+                  <option value="SCAFFOLDING_FRAME">TUBULAR FRAME SCAFFOLDING (External Access Scaffolding)</option>
+                  <option value="MOBILE_CRANE_BACKHOE">MOBILE CRANE / BACKHOE (Heavy Plant &amp; Machinery)</option>
+                  <option value="ELECTRICAL_DB">ELECTRICAL DB &amp; ELCB (Site Distribution Board)</option>
+                  <option value="ROOF_SAFETY_LINE">ROOF SAFETY LINE &amp; ANCHOR (Roof Lifeline &amp; Anchorage)</option>
+                  <option value="SILT_TRAP_ESCP">SILT TRAP &amp; EARTH DRAIN (Sedimentation Basin &amp; Earth Drain)</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">No. Tag / Kod Siri *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Tag No. / Serial Code *</label>
                 <input 
                   type="text"
-                  placeholder="cth: SCAF-TAG-01, MC-KOBELCO-04"
+                  placeholder="e.g. SCAF-TAG-01, MC-KOBELCO-04"
                   value={newInspTag}
                   onChange={e => setNewInspTag(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-amber-400 uppercase"
@@ -733,10 +733,10 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Lokasi Tapak *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Site Location *</label>
                 <input 
                   type="text"
-                  placeholder="cth: Blok B, Fasa 2 (Hadapan Rumah Teres Lot 12-18)"
+                  placeholder="e.g. Block B, Phase 2 (Terrace House Lots 12-18)"
                   value={newInspLocation}
                   onChange={e => setNewInspLocation(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-amber-400"
@@ -746,19 +746,19 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Status Tag *</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Tag Status *</label>
                   <select 
                     value={newInspStatus}
                     onChange={e => setNewInspStatus(e.target.value as any)}
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-amber-400"
                   >
-                    <option value="SAFE_GREEN_TAG">GREEN TAG (Lulus / Selamat Digunakan)</option>
-                    <option value="REJECT_RED_TAG">RED TAG (Gagal / Dilarang Guna)</option>
+                    <option value="SAFE_GREEN_TAG">GREEN TAG (Passed / Safe to Use)</option>
+                    <option value="REJECT_RED_TAG">RED TAG (Failed / Do Not Use)</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nama Pemeriksa Kompeten *</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Competent Inspector Name *</label>
                   <input 
                     type="text"
                     value={newInspInspector}
@@ -770,10 +770,10 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Catatan Pemeriksaan</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Inspection Remarks</label>
                 <input 
                   type="text"
-                  placeholder="cth: Bracing lengkap, base plate kukuh, tiada kerosakan fizikal"
+                  placeholder="e.g. Complete cross-bracing, sound base plates, no physical defects"
                   value={newInspRemarks}
                   onChange={e => setNewInspRemarks(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-amber-400"
@@ -786,13 +786,13 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
                   onClick={() => setShowInspectionModal(false)}
                   className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 uppercase tracking-wider shadow-lg shadow-amber-400/20"
                 >
-                  Simpan Rekod Pemeriksaan
+                  Save Inspection Record
                 </button>
               </div>
             </form>

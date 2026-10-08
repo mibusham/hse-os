@@ -23,8 +23,8 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
       id: 'fog-1',
       date: '2026-09-30',
       chemical: 'Resigen & Abate 1SG Larvicide',
-      contractor: 'BioVector Pest Control Sdn Bhd (Berlesen)',
-      area: 'Longkang Fasa 2A & Tapak Kerja Eco Sun',
+      contractor: 'BioVector Pest Control Sdn Bhd (Licensed)',
+      area: 'Phase 2A Perimeter Drainage & Eco Sun Work Site',
       nextDueDate: '2026-10-14',
       status: 'COMPLETED'
     }
@@ -38,10 +38,10 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
   const [wbgtIndex, setWbgtIndex] = useState<number>(31.2);
   const [showFoggingModal, setShowFoggingModal] = useState(false);
   const [fogChem, setFogChem] = useState('Resigen & Abate 1SG');
-  const [fogContractor, setFogContractor] = useState('BioVector Pest Control (Berlesen)');
-  const [fogArea, setFogArea] = useState('Zon Rumah Teres & Parit Earth Drain');
+  const [fogContractor, setFogContractor] = useState('BioVector Pest Control (Licensed)');
+  const [fogArea, setFogArea] = useState('Terrace Housing Zones & Earth Drains');
 
-  // CLQ Akta 446
+  // CLQ Act 446
   const [clqResidents, setClqResidents] = useState<number>(45);
   const [clqCertValid, setClqCertValid] = useState<boolean>(true);
 
@@ -55,18 +55,18 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
   const cycleRemaining = Math.max(0, 14 - daysSinceLastFog);
 
   // Heat Risk Level
-  let heatRiskLabel = 'WASPADA (SEDERHANA)';
+  let heatRiskLabel = 'CAUTION (MODERATE)';
   let heatRiskColor = 'text-amber-400 bg-amber-500/10 border-amber-500/20';
-  let heatAdvice = 'Bekalan air sejuk & minuman garam rehidrasi di stesen rehat berbumbung.';
+  let heatAdvice = 'Chilled drinking water & oral rehydration salts available at sheltered rest stations.';
 
   if (wbgtIndex < 28) {
-    heatRiskLabel = 'NORMAL (RENDAH)';
+    heatRiskLabel = 'NORMAL (LOW)';
     heatRiskColor = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-    heatAdvice = 'Kerja luar berjalan seperti biasa. Minum air mencukupi.';
+    heatAdvice = 'Outdoor activities proceed normally. Ensure regular hydration intake.';
   } else if (wbgtIndex >= 32.5) {
-    heatRiskLabel = 'BAHAYA (TINGGI - MANDATORI REHAT)';
+    heatRiskLabel = 'DANGER (HIGH - MANDATORY REST)';
     heatRiskColor = 'text-rose-400 bg-rose-500/10 border-rose-500/20';
-    heatAdvice = 'Wajib rehat 15 minit setiap jam bagi pekerja kekuda bumbung & kerja terbuka.';
+    heatAdvice = 'Mandatory 15-minute rest breaks every hour for roof truss & open sunlight workers.';
   }
 
   const handleAddFogging = (e: React.FormEvent) => {
@@ -102,13 +102,13 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
               <HeartHandshake size={12} /> Statutory Pillar 4
             </span>
             <span className="text-xs text-slate-500 font-mono">•</span>
-            <span className="text-xs font-mono text-slate-400 font-bold">Kesihatan Pekerja, CLQ Akta 446 &amp; Vektor</span>
+            <span className="text-xs font-mono text-slate-400 font-bold">Occupational Health, Act 446 CLQ &amp; Vector Control</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-            Kebajikan Pekerja, Kawalan Vektor Aedes &amp; Tekanan Haba
+            Worker Welfare, Aedes Vector Control &amp; Heat Stress Index
           </h2>
           <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            Pematuhan Akta Piawaian Minimum Perumahan dan Penginapan Pekerja (Akta 446), kitaran semburan kabus nyamuk (Akta 130), dan pemantauan indeks tekanan haba (Heat Stress WBGT).
+            Compliance with Workers' Minimum Standards of Housing and Amenities Act (Act 446), cyclical anti-dengue thermal fogging (Act 130), and Wet Bulb Globe Temperature (WBGT) heat stress management.
           </p>
         </div>
 
@@ -119,7 +119,7 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
             className="px-5 py-2.5 rounded-2xl bg-blue-400 hover:bg-blue-300 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-blue-400/20 active:scale-95 transition-all"
           >
             <Plus size={16} />
-            <span>+ Rekod Semburan Fogging</span>
+            <span>+ Log Fogging Record</span>
           </button>
         </div>
       </div>
@@ -128,13 +128,13 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
         {/* Vector Control / Fogging Card */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Kawalan Vektor Aedes (Akta 130)</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Aedes Vector Control (Act 130)</span>
             <span className="text-[9px] font-mono font-bold bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">
-              KITARAN 14-HARI
+              14-DAY CYCLE
             </span>
           </div>
           <p className="text-2xl font-black text-white font-mono mt-1">
-            Hari Ke-{daysSinceLastFog} / 14
+            Day {daysSinceLastFog} of 14
           </p>
           <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
             <div 
@@ -143,14 +143,14 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
             />
           </div>
           <p className="text-[10px] text-slate-400">
-            Baki <strong>{cycleRemaining} hari</strong> sebelum semburan seterusnya ({latestFog?.nextDueDate || '14 Okt 2026'}).
+            <strong>{cycleRemaining} days remaining</strong> until next fogging cycle ({latestFog?.nextDueDate || '14 Oct 2026'}).
           </p>
         </div>
 
         {/* Heat Stress Index Card */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Heat Stress (Indeks WBGT)</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Heat Stress (WBGT Index)</span>
             <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border ${heatRiskColor}`}>
               {heatRiskLabel}
             </span>
@@ -160,7 +160,7 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
             <p className="text-3xl font-black text-amber-400 font-mono mt-1">
               {wbgtIndex.toFixed(1)}°C
             </p>
-            <span className="text-xs text-slate-400 font-medium">Suhu Basah Terbuka</span>
+            <span className="text-xs text-slate-400 font-medium">Open Wet-Bulb Temperature</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -183,7 +183,7 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
         {/* Akta 446 CLQ Quarters Card */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Penginapan Pekerja (Akta 446)</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Worker Accommodation (Act 446)</span>
             <button
               type="button"
               onClick={() => setClqCertValid(!clqCertValid)}
@@ -191,14 +191,14 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
                 clqCertValid ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
               }`}
             >
-              {clqCertValid ? 'PERAKUAN JTKSM ✓' : 'MENUNGGU KELULUSAN'}
+              {clqCertValid ? 'JTKSM CERTIFIED ✓' : 'PENDING APPROVAL'}
             </button>
           </div>
           <p className="text-sm font-bold text-white mt-1">
-            Pekerja Ditempatkan Di CLQ Berpusat Berdaftar
+            Workers Housed in Registered Centralized CLQ
           </p>
           <div className="flex items-center justify-between text-xs pt-1 font-mono text-slate-300">
-            <span>Kapasiti Pekerja:</span>
+            <span>Worker Capacity:</span>
             <div className="flex items-center gap-1">
               <input 
                 type="number"
@@ -206,11 +206,11 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
                 onChange={e => setClqResidents(Number(e.target.value))}
                 className="w-16 bg-slate-800 border border-slate-700 rounded-lg px-2 py-0.5 text-right font-bold text-emerald-400 font-mono text-xs"
               />
-              <span className="text-slate-400">Orang</span>
+              <span className="text-slate-400">Workers</span>
             </div>
           </div>
           <p className="text-[10px] text-slate-400 leading-relaxed">
-            Tiada kongsi haram di atas tapak. Pematuhan penuh syarat bomba dan Jabatan Tenaga Kerja Semenanjung Malaysia.
+            Zero unauthorized on-site kongsi accommodation. Full compliance with Fire Dept &amp; JTKSM guidelines.
           </p>
         </div>
       </div>
@@ -219,9 +219,9 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
         <div className="flex items-center justify-between pb-2 border-b border-slate-800">
           <h3 className="text-xs font-black uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
-            <Wind size={14} /> Lejar Semburan Thermal Fogging &amp; Abate (Kawalan Denggi)
+            <Wind size={14} /> Thermal Fogging &amp; Abate Larvicide Ledger (Dengue Control)
           </h3>
-          <span className="text-[10px] text-slate-400 font-mono">Pemeriksaan KKM / Majlis Daerah</span>
+          <span className="text-[10px] text-slate-400 font-mono">MOH / Local Council Auditable</span>
         </div>
 
         <div className="space-y-2">
@@ -235,13 +235,13 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
                   </span>
                 </div>
                 <span className="text-[10px] text-slate-400 font-mono block">
-                  Tarikh Semburan: {fog.date} • Kontraktor: {fog.contractor}
+                  Fogging Date: {fog.date} • Contractor: {fog.contractor}
                 </span>
               </div>
 
               <div className="flex items-center gap-4 self-end sm:self-auto">
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-500 block">Jadual Seterusnya:</span>
+                  <span className="text-[10px] text-slate-500 block">Next Scheduled Cycle:</span>
                   <span className="font-mono font-bold text-emerald-400">{fog.nextDueDate}</span>
                 </div>
 
@@ -258,20 +258,20 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
         </div>
       </div>
 
-      {/* MODAL: REKOD FOGGING BARU */}
+      {/* MODAL: RECORD NEW FOGGING CYCLE */}
       {showFoggingModal && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-black text-white flex items-center gap-2">
-                <Wind size={18} className="text-blue-400" /> Rekod Semburan Fogging Baharu
+                <Wind size={18} className="text-blue-400" /> Record New Fogging Cycle
               </h3>
               <button onClick={() => setShowFoggingModal(false)} className="text-slate-400 hover:text-white text-xs font-bold">✕</button>
             </div>
 
             <form onSubmit={handleAddFogging} className="space-y-4">
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Kawasan Semburan *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Treatment Zone / Location *</label>
                 <input 
                   type="text"
                   value={fogArea}
@@ -282,7 +282,7 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Bahan Kimia / Larvasid *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Chemical / Larvicide *</label>
                 <input 
                   type="text"
                   value={fogChem}
@@ -293,7 +293,7 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Syarikat Kawalan Vektor Berlesen *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Licensed Vector Control Contractor *</label>
                 <input 
                   type="text"
                   value={fogContractor}
@@ -304,8 +304,8 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
               </div>
 
               <div className="pt-2 flex justify-end gap-3">
-                <button type="button" onClick={() => setShowFoggingModal(false)} className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800">Batal</button>
-                <button type="submit" className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-blue-400 hover:bg-blue-300 uppercase tracking-wider shadow-lg shadow-blue-400/20">Simpan Log Fogging</button>
+                <button type="button" onClick={() => setShowFoggingModal(false)} className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800">Cancel</button>
+                <button type="submit" className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-blue-400 hover:bg-blue-300 uppercase tracking-wider shadow-lg shadow-blue-400/20">Save Fogging Log</button>
               </div>
             </form>
           </div>

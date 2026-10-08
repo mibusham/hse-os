@@ -19,37 +19,37 @@ export interface SubconScopeOption {
 const DEFAULT_SCOPES: SubconScopeOption[] = [
   { 
     id: 'KERJA_STRUKTUR_PERANCAH', 
-    name: 'Kerja Struktur Konkrit & Perancah (Scaffolding)', 
-    cidbSpecialization: 'B04 (Pembinaan Bangunan) / CE21', 
-    riskCategory: 'Tinggi (Bekerja di Tempat Tinggi)', 
+    name: 'Structural Concrete & Scaffolding Works', 
+    cidbSpecialization: 'B04 (Building Construction) / CE21', 
+    riskCategory: 'High (Working at Height)', 
     recommendedGrade: 'G4' 
   },
   { 
     id: 'KERJA_BUMBUNG_KEKUDA', 
-    name: 'Pemasangan Kekuda Bumbung & Genting', 
-    cidbSpecialization: 'B04 / B12 (Kerja Bumbung)', 
-    riskCategory: 'Tinggi (Bumbung & Jatuh)', 
+    name: 'Roof Truss & Roof Tiling Installation', 
+    cidbSpecialization: 'B04 / B12 (Roofing Works)', 
+    riskCategory: 'High (Roofing & Falls from Height)', 
     recommendedGrade: 'G3' 
   },
   { 
     id: 'KERJA_TANAH_PARIT', 
-    name: 'Kerja Tanah, Parit & Pembentungan', 
-    cidbSpecialization: 'CE01 / CE02 (Kerja Tanah & Saliran)', 
-    riskCategory: 'Tinggi (Korek Parit & Loji Berat)', 
+    name: 'Earthworks, Deep Trenching & Drainage', 
+    cidbSpecialization: 'CE01 / CE02 (Earthworks & Drainage)', 
+    riskCategory: 'High (Trench Collapse & Heavy Plant)', 
     recommendedGrade: 'G3' 
   },
   { 
     id: 'KERJA_MEKANIKAL_ELEKTRIK', 
-    name: 'Pemasangan M&E dan Pendawaian Elektrik', 
+    name: 'M&E Installation & Electrical Wiring', 
     cidbSpecialization: 'E01 - E11 / ME', 
-    riskCategory: 'Sederhana (Renjatan & Kerja Panas)', 
+    riskCategory: 'Moderate (Electrocution & Hot Work)', 
     recommendedGrade: 'G3' 
   },
   { 
     id: 'KERJA_IKAT_BATA_PLASTER', 
-    name: 'Ikat Bata, Lepaan Plaster & Cat', 
-    cidbSpecialization: 'B04 (Kerja Am Bangunan)', 
-    riskCategory: 'Rendah - Sederhana', 
+    name: 'Bricklaying, Plastering & Painting', 
+    cidbSpecialization: 'B04 (General Building Works)', 
+    riskCategory: 'Low - Moderate', 
     recommendedGrade: 'G2' 
   },
 ];
@@ -83,7 +83,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
   }>>([
     {
       sender: 'core',
-      text: 'Salam bro! Apa skop kerja sebenar subkontraktor ini di tapak? Terangkan kepada saya secara santai (contoh: pasang solar, bore piling, turap jalan, pasang lif dsb). Saya akan padankan dengan kod pengkhususan CIDB & standard KKP, kemudian wujudkan pilihan skop ini untuk borang bro.',
+      text: 'Hello! What is this subcontractor\'s actual scope of work on site? Describe it casually (e.g. solar panel installation, bored piling, premix road paving, lift installation, etc.). I will match it with official CIDB specialization codes and OSH safety standards, then inject it directly into your form options.',
     }
   ]);
   const [chatInput, setChatInput] = useState('');
@@ -104,9 +104,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('solar') || lower.includes('pv') || lower.includes('panel')) {
       return {
         id: `SCOPE_SOLAR_${Date.now()}`,
-        name: 'Pemasangan Sistem Solar PV & Pendawaian Arus Tinggi',
-        cidbSpecialization: 'E11 (Pemasangan Tanda & Sistem Solar) / ME',
-        riskCategory: 'Tinggi (Bekerja di Bumbung & Bahaya Elektrik DC)',
+        name: 'Solar PV Installation & High-Voltage Cable Tray',
+        cidbSpecialization: 'E11 (Signage & Solar Systems) / ME',
+        riskCategory: 'High (Roof Work & High-Voltage DC Shock)',
         recommendedGrade: 'G3',
         isCustom: true,
       };
@@ -114,9 +114,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('pile') || lower.includes('piling') || lower.includes('cerucuk') || lower.includes('bore')) {
       return {
         id: `SCOPE_PILING_${Date.now()}`,
-        name: 'Kerja Cerucuk (Bore/Spun/Sheet Pile) & Ujian Beban Asas',
-        cidbSpecialization: 'CE02 (Jambatan, Jeti & Cerucuk) / CE21',
-        riskCategory: 'Tinggi (Jentera Berat Piling Rig & Geoteknik)',
+        name: 'Piling Works (Bored/Spun/Sheet Pile) & Static Load Testing',
+        cidbSpecialization: 'CE02 (Bridges, Jetties & Piling) / CE21',
+        riskCategory: 'High (Heavy Piling Rig & Geotechnical Risk)',
         recommendedGrade: 'G4',
         isCustom: true,
       };
@@ -124,19 +124,19 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('jalan') || lower.includes('road') || lower.includes('premix') || lower.includes('tar') || lower.includes('kerb') || lower.includes('turap')) {
       return {
         id: `SCOPE_ROAD_${Date.now()}`,
-        name: 'Pembinaan Jalan Raya, Premix Berturap & Longkang Jalan',
-        cidbSpecialization: 'CE01 (Jalan Raya & Pavmen)',
-        riskCategory: 'Tinggi (Trafik Loji Berat & Bahan Panas Bitumen)',
+        name: 'Road Pavement, Premix Asphalt & Roadside Drainage',
+        cidbSpecialization: 'CE01 (Roads & Pavements)',
+        riskCategory: 'High (Heavy Tipper Traffic & Hot Bitumen)',
         recommendedGrade: 'G3',
         isCustom: true,
       };
     }
-    if (lower.includes('kaca') || lower.includes('tingkap') || lower.includes('fasad') || lower.includes('facade') || lower.includes('curtain') || lower.includes('aluminium')) {
+    if (lower.includes('kaca') || lower.includes('tingkap') || lower.includes('fasad') || lower.includes('facade') || lower.includes('curtain') || lower.includes('aluminium') || lower.includes('glass')) {
       return {
         id: `SCOPE_FACADE_${Date.now()}`,
-        name: 'Pemasangan Fasad Aluminium Komposit & Kaca Tingkap (Curtain Wall)',
-        cidbSpecialization: 'B04 / B28 (Kerja Kaca & Aluminium)',
-        riskCategory: 'Tinggi (Kerja di Tempat Tinggi & Gondola / Boom Lift)',
+        name: 'Aluminium Composite Panel & Curtain Wall Glass Facade',
+        cidbSpecialization: 'B04 / B28 (Glass & Aluminium Works)',
+        riskCategory: 'High (Working at Height & Suspended Boom Lift)',
         recommendedGrade: 'G3',
         isCustom: true,
       };
@@ -144,9 +144,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('lif') || lower.includes('lift') || lower.includes('eskalator') || lower.includes('escalator') || lower.includes('hoist')) {
       return {
         id: `SCOPE_LIFT_${Date.now()}`,
-        name: 'Pemasangan & Pengujian Lif Penumpang, Barang & Eskalator',
-        cidbSpecialization: 'M03 (Lif & Eskalator) / ME',
-        riskCategory: 'Tinggi (Lubang Lif Terbuka Shaft & Ruang Terkurung)',
+        name: 'Passenger Hoist, Lift & Escalator Installation and Commissioning',
+        cidbSpecialization: 'M03 (Lifts & Escalators) / ME',
+        riskCategory: 'High (Open Lift Shaft Falls & Confined Pit)',
         recommendedGrade: 'G4',
         isCustom: true,
       };
@@ -154,9 +154,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('aircond') || lower.includes('hvac') || lower.includes('hawa dingin') || lower.includes('chiller') || lower.includes('duct')) {
       return {
         id: `SCOPE_HVAC_${Date.now()}`,
-        name: 'Pemasangan Sistem Penyamanan Udara (HVAC) & Salur Udara',
-        cidbSpecialization: 'M01 (Sistem Penyamanan Udara & Pengalihan Udara)',
-        riskCategory: 'Sederhana (Bekerja Atas Siling & Gas Penyejuk Bertekanan)',
+        name: 'HVAC Air Conditioning & Mechanical Ventilation Ducting',
+        cidbSpecialization: 'M01 (Air Conditioning & Ventilation Systems)',
+        riskCategory: 'Moderate (Ceiling Scaffolding & Pressurized Refrigerant)',
         recommendedGrade: 'G2',
         isCustom: true,
       };
@@ -164,19 +164,19 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('bomba') || lower.includes('fire') || lower.includes('sprinkler') || lower.includes('kebakaran') || lower.includes('hosereel')) {
       return {
         id: `SCOPE_FIRE_${Date.now()}`,
-        name: 'Pemasangan Sistem Perlindungan Kebakaran & Paip Sprinkler',
-        cidbSpecialization: 'M02 (Sistem Pencegahan Kebakaran)',
-        riskCategory: 'Sederhana (Ujian Tekanan Paip & Kimpalan Panas)',
+        name: 'Fire Protection Piping & Sprinkler System Installation',
+        cidbSpecialization: 'M02 (Fire Protection Systems)',
+        riskCategory: 'Moderate (Pressure Testing & Hot Work Welding)',
         recommendedGrade: 'G3',
         isCustom: true,
       };
     }
-    if (lower.includes('paip') || lower.includes('plumbing') || lower.includes('sanitari') || lower.includes('sanitary') || lower.includes('kumbahan') || lower.includes('culvert')) {
+    if (lower.includes('paip') || lower.includes('plumbing') || lower.includes('sanitari') || lower.includes('sanitary') || lower.includes('kumbahan') || lower.includes('culvert') || lower.includes('pipe')) {
       return {
         id: `SCOPE_PLUMBING_${Date.now()}`,
-        name: 'Pemasangan Paip Air Dalaman, Sanitari & Saliran Kumbahan',
-        cidbSpecialization: 'CE19 (Sistem Pembetungan) / CE20 / B04',
-        riskCategory: 'Sederhana (Korek Parit & Ruang Terkurung Manhole)',
+        name: 'Internal Plumbing, Sanitary & Underground Sewerage Reticulation',
+        cidbSpecialization: 'CE19 (Sewerage Systems) / CE20 / B04',
+        riskCategory: 'Moderate (Trench Shoring & Confined Manholes)',
         recommendedGrade: 'G2',
         isCustom: true,
       };
@@ -184,9 +184,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('landskap') || lower.includes('landscape') || lower.includes('pokok') || lower.includes('rumput') || lower.includes('turfing')) {
       return {
         id: `SCOPE_LANDSCAPE_${Date.now()}`,
-        name: 'Kerja Landskap Lembut (Turfing/Pokok) & Hardscape Luaran',
-        cidbSpecialization: 'CE14 (Landskap & Pengindahan)',
-        riskCategory: 'Rendah (Jentera Pemotong & Baja)',
+        name: 'Soft Landscaping (Turfing/Trees) & External Hardscape Works',
+        cidbSpecialization: 'CE14 (Landscaping & Beautification)',
+        riskCategory: 'Low (Mowers & Fertilizer Handling)',
         recommendedGrade: 'G1',
         isCustom: true,
       };
@@ -194,9 +194,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('waterproof') || lower.includes('kalis air') || lower.includes('epoxy') || lower.includes('cat') || lower.includes('paint')) {
       return {
         id: `SCOPE_FINISHES_${Date.now()}`,
-        name: 'Kerja Membran Kalis Air (Waterproofing) & Salutan Cat/Epoksi',
-        cidbSpecialization: 'B04 / B09 (Kalis Air & Kemasan)',
-        riskCategory: 'Sederhana (Wap Toksik Bahan Kimia VOC)',
+        name: 'Waterproofing Membrane Application & Epoxy Coating Finishes',
+        cidbSpecialization: 'B04 / B09 (Waterproofing & Finishes)',
+        riskCategory: 'Moderate (Toxic Vapor / VOC Solvents)',
         recommendedGrade: 'G2',
         isCustom: true,
       };
@@ -204,9 +204,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('besi') || lower.includes('rebar') || lower.includes('tetulang') || lower.includes('acuan') || lower.includes('formwork')) {
       return {
         id: `SCOPE_REBAR_${Date.now()}`,
-        name: 'Pemasangan Acuan Konkrit (Formwork) & Anyaman Besi Tetulang (Rebar)',
+        name: 'Formwork Shuttering & Rebar Steel Fixing Works',
         cidbSpecialization: 'B04 / CE21',
-        riskCategory: 'Tinggi (Bahaya Tertusuk Besi Terdedah & Acuan Runtuh)',
+        riskCategory: 'High (Exposed Starter Bar Impalement & Shutter Collapse)',
         recommendedGrade: 'G3',
         isCustom: true,
       };
@@ -214,9 +214,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     if (lower.includes('cerun') || lower.includes('slope') || lower.includes('gabion') || lower.includes('soil nail')) {
       return {
         id: `SCOPE_SLOPE_${Date.now()}`,
-        name: 'Penstabilan Cerun, Pemasangan Gabion & Soil Nailing',
-        cidbSpecialization: 'CE08 (Perlindungan Cerun)',
-        riskCategory: 'Tinggi (Tanah Runtuh & Bekerja di Kecerunan Curam)',
+        name: 'Slope Protection, Gabion Retaining Walls & Soil Nailing',
+        cidbSpecialization: 'CE08 (Slope Protection)',
+        riskCategory: 'High (Landslide Risk & Steep Working Conditions)',
         recommendedGrade: 'G4',
         isCustom: true,
       };
@@ -227,9 +227,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
     const capitalized = cleanWords.charAt(0).toUpperCase() + cleanWords.slice(1);
     return {
       id: `SCOPE_CUSTOM_${Date.now()}`,
-      name: `Kerja Khusus Tapak: ${capitalized}`,
-      cidbSpecialization: 'B04 / CE21 (Kerja Am Bangunan / Kejuruteraan)',
-      riskCategory: 'Tertakluk kepada HIRADC Khusus Tapak',
+      name: `Specialist Trade: ${capitalized}`,
+      cidbSpecialization: 'B04 / CE21 (General Building / Civil Engineering)',
+      riskCategory: 'Subject to Site-Specific HIRADC Assessment',
       recommendedGrade: 'G2',
       isCustom: true,
     };
@@ -248,7 +248,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
       const matched = analyzeTradeWithCore(query);
       const coreReply = {
         sender: 'core' as const,
-        text: `Berdasarkan huraian "${query}", analisis Core telah memadankan skop ini dengan pengkhususan statutori CIDB dan profil risiko KKP yang tepat. Sila semak cadangan di bawah:`,
+        text: `Based on your description "${query}", Core has matched this with official CIDB specialization codes and OSH risk standards. Review the proposed scope below:`,
         suggestion: matched,
       };
       setChatMessages(prev => [...prev, coreReply]);
@@ -257,22 +257,18 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
   };
 
   const handleConfirmAddScope = (scopeToAdd: SubconScopeOption) => {
-    // Add to scopes if not already present
     if (!scopes.some(s => s.name.toLowerCase() === scopeToAdd.name.toLowerCase())) {
       setScopes(prev => [...prev, scopeToAdd]);
     }
-    // Set current form scope directly to the name
     setScope(scopeToAdd.name);
-    // Auto-update CIDB Grade recommendation if available
     if (scopeToAdd.recommendedGrade) {
       setCidbGrade(scopeToAdd.recommendedGrade);
     }
-    // Confirmation message in chat
     setChatMessages(prev => [
       ...prev,
       {
         sender: 'core',
-        text: `✅ Berjaya! Skop "${scopeToAdd.name}" telah diwujudkan ke dalam senarai dan dipilih secara automatik. Gred CIDB juga diselaraskan ke ${scopeToAdd.recommendedGrade || 'G3'}. Bro boleh lengkapkan no. polisi CAR dan klik Daftar sekarang.`
+        text: `✅ Success! Scope "${scopeToAdd.name}" has been created and auto-selected in your registration form. CIDB grade has been set to ${scopeToAdd.recommendedGrade || 'G3'}. You can now complete the CAR policy details and submit.`
       }
     ]);
   };
@@ -290,7 +286,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
       carInsuranceValid: true,
       carPolicyNo: carPolicyNo.toUpperCase(),
       carExpiryDate,
-      greenCardCompliance: `100% (${workersCount}/${workersCount} Berdaftar)`,
+      greenCardCompliance: `100% (${workersCount}/${workersCount} Certified)`,
       workersCount,
       status
     };
@@ -332,13 +328,13 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
               <Building2 size={12} /> Statutory Pillar 5
             </span>
             <span className="text-xs text-slate-500 font-mono">•</span>
-            <span className="text-xs font-mono text-slate-400 font-bold">Tadbir Urus Korporat &amp; Subkontraktor</span>
+            <span className="text-xs font-mono text-slate-400 font-bold">Corporate Governance &amp; Subcontractor Vetting</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-            Penapisan Kontraktor CIDB &amp; Polisi Insurans CAR
+            CIDB Contractor Vetting &amp; CAR Insurance Compliance
           </h2>
           <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            Pengesahan kad hijau CIDB pekerja subkontraktor (Akta 520), polisi Contractor's All Risk (CAR), Workmen Compensation (WCA/SOCSO), dan saringan kelayakan kemasukan tapak bersama sokongan AI Trade Specialist.
+            Statutory verification of subcontractor CIDB Green Cards (Act 520), Contractor's All Risk (CAR) policies, Workmen's Compensation (WCA/SOCSO), and site entry clearance supported by Core AI Trade Copilot.
           </p>
         </div>
 
@@ -352,7 +348,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
             className="px-5 py-2.5 rounded-2xl bg-purple-500 hover:bg-purple-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-purple-500/20 active:scale-95 transition-all"
           >
             <Plus size={16} />
-            <span>+ Daftar Subkontraktor</span>
+            <span>+ Register Subcontractor</span>
           </button>
         </div>
       </div>
@@ -360,21 +356,21 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
-          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Jumlah Subkontraktor Berdaftar</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Total Registered Subcontractors</span>
           <p className="text-3xl font-black text-white mt-1 font-mono">{subconList.length}</p>
-          <span className="text-[10px] text-purple-400 font-medium">Syarikat Berdaftar CIDB</span>
+          <span className="text-[10px] text-purple-400 font-medium">CIDB Registered Firms</span>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
-          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Kelulusan Insurans CAR &amp; CIDB</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">CAR Insurance &amp; CIDB Clearance</span>
           <p className="text-3xl font-black text-emerald-400 mt-1 font-mono">{approvedCount} / {subconList.length || 0}</p>
-          <span className="text-[10px] text-emerald-400/80 font-medium">100% Polisi Aktif</span>
+          <span className="text-[10px] text-emerald-400/80 font-medium">100% Active Policies</span>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
-          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Jumlah Pekerja Berkad Hijau</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Total Green Card Certified Workers</span>
           <p className="text-3xl font-black text-cyan-400 mt-1 font-mono">{totalWorkers}</p>
-          <span className="text-[10px] text-cyan-400/80 font-medium">Pematuhan Penuh Akta 520 CIDB</span>
+          <span className="text-[10px] text-cyan-400/80 font-medium">Full Compliance with CIDB Act 520</span>
         </div>
       </div>
 
@@ -382,17 +378,17 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
       <div className="space-y-3">
         <div className="flex items-center justify-between px-1">
           <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
-            <Users size={14} className="text-purple-400" /> Direktori Subkontraktor Aktif Di Tapak
+            <Users size={14} className="text-purple-400" /> Active On-Site Subcontractor Directory
           </h3>
-          <span className="text-[10px] text-slate-500 font-mono">Semakan Dokumen Wajib Sebelum Masuk</span>
+          <span className="text-[10px] text-slate-500 font-mono">Mandatory Pre-Entry Document Clearance</span>
         </div>
 
         {subconList.length === 0 ? (
           <div className="bg-slate-900 border-2 border-dashed border-slate-800 rounded-3xl p-12 text-center space-y-3">
             <Building2 size={36} className="text-slate-600 mx-auto" />
-            <h4 className="text-sm font-bold text-slate-300">Tiada Subkontraktor Didaftarkan Buat Masa Ini</h4>
+            <h4 className="text-sm font-bold text-slate-300">No Subcontractors Registered Yet</h4>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Semua subkontraktor kerja struktur, bumbung, mekanikal, dan kerja tanah perlu didaftarkan bersama sijil CIDB dan insurans CAR sebelum memasuki tapak. Klik butang di atas untuk mendaftar.
+              All structural, roofing, M&amp;E, and earthwork subcontractors must be registered with valid CIDB accreditation and active CAR insurance before site mobilization. Click the button above to register.
             </p>
           </div>
         ) : (
@@ -401,7 +397,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
               <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-slate-800/60">
                 <div className="flex items-center gap-2.5">
                   <span className="text-xs font-black text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-xl border border-purple-500/20 font-mono">
-                    CIDB Gred {sub.cidbGrade}
+                    CIDB Grade {sub.cidbGrade}
                   </span>
                   <span className="text-xs font-black text-white uppercase tracking-wider">
                     {sub.name}
@@ -417,9 +413,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                         ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'
                         : 'bg-amber-500/10 text-amber-400 border-amber-500/30 hover:bg-amber-500/20'
                     }`}
-                    title="Klik untuk ubah status saringan"
+                    title="Click to toggle vetting status"
                   >
-                    {sub.status === 'APPROVED' ? '✓ DILULUSKAN (PERMITTED)' : '⏳ DOKUMEN BELUM LENGKAP'}
+                    {sub.status === 'APPROVED' ? '✓ APPROVED (PERMITTED)' : '⏳ PENDING DOCUMENTS'}
                   </button>
 
                   <button
@@ -434,26 +430,26 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
 
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Skop Kerja Tapak:</span>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Scope of Work:</span>
                   <p className="text-slate-200 font-medium mt-0.5">{sub.scope}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Polisi Insurans CAR:</span>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">CAR Insurance Policy:</span>
                   <p className="text-slate-200 font-mono mt-0.5 flex items-center gap-1.5">
                     <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />
                     <span className="truncate">{sub.carPolicyNo}</span>
                   </p>
-                  <span className="text-[9px] text-slate-500 font-mono">Sah shg: {sub.carExpiryDate}</span>
+                  <span className="text-[9px] text-slate-500 font-mono">Valid until: {sub.carExpiryDate}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Pekerja &amp; Kad Hijau:</span>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Personnel &amp; Green Cards:</span>
                   <p className="text-slate-200 font-medium mt-0.5">{sub.greenCardCompliance}</p>
-                  <span className="text-[9px] text-emerald-400 font-mono">{sub.workersCount} Pekerja Sah</span>
+                  <span className="text-[9px] text-emerald-400 font-mono">{sub.workersCount} Certified Workers</span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Perakuan CIDB Sah:</span>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Valid CIDB Certification:</span>
                   <p className="text-slate-200 font-mono mt-0.5">{sub.cidbExp}</p>
-                  <span className="text-[9px] text-slate-500">Pusat Khidmat CIDB</span>
+                  <span className="text-[9px] text-slate-500">CIDB Central Registry</span>
                 </div>
               </div>
             </div>
@@ -461,7 +457,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
         )}
       </div>
 
-      {/* MODAL: DAFTAR SUBCON BARU DENGAN INTEGRASI IN-CONTEXT CORE AI CHAT */}
+      {/* MODAL: REGISTER NEW SUBCON WITH IN-CONTEXT CORE AI TRADE COPILOT */}
       {showAddModal && (
         <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
           <div className={`bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-7 w-full shadow-2xl transition-all my-auto ${
@@ -476,9 +472,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                 </div>
                 <div>
                   <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-wide">
-                    Daftar Subkontraktor Baharu
+                    Register New Subcontractor
                   </h3>
-                  <span className="text-[10px] text-slate-400 font-medium">Saringan Pematuhan CIDB &amp; Insurans CAR</span>
+                  <span className="text-[10px] text-slate-400 font-medium">CIDB &amp; CAR Insurance Compliance Screening</span>
                 </div>
               </div>
 
@@ -490,7 +486,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
               </button>
             </div>
 
-            {/* Modal Body: Split Layout if Core Chat is Active */}
+            {/* Modal Body */}
             <div className={`grid gap-6 pt-4 ${showCoreChat ? 'lg:grid-cols-12' : 'grid-cols-1'}`}>
               
               {/* Form Section */}
@@ -499,11 +495,11 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                 {/* Company Name */}
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Nama Syarikat Subkontraktor *
+                    Subcontractor Company Name *
                   </label>
                   <input 
                     type="text"
-                    placeholder="cth: SURIA MAJU ENGINEERING SDN BHD"
+                    placeholder="e.g. SURIA MAJU ENGINEERING SDN BHD"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white outline-none focus:border-purple-400 uppercase placeholder:text-slate-500"
@@ -515,10 +511,10 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      Skop Kerja Di Tapak *
+                      Scope of Work On Site *
                     </label>
 
-                    {/* Button: Bincang Dengan Core AI */}
+                    {/* Button: Discuss with Core AI */}
                     <button
                       type="button"
                       onClick={() => setShowCoreChat(!showCoreChat)}
@@ -529,7 +525,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                       }`}
                     >
                       <Sparkles size={11} className={showCoreChat ? 'animate-spin' : ''} />
-                      <span>{showCoreChat ? 'Tutup Bantuan Core' : '✨ Tiada Dalam List? Bincang Dgn Core'}</span>
+                      <span>{showCoreChat ? 'Close Core Copilot' : '✨ Not In List? Discuss with Core'}</span>
                     </button>
                   </div>
 
@@ -540,7 +536,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                   >
                     {scopes.map(s => (
                       <option key={s.id} value={s.name}>
-                        {s.name} {s.isCustom ? '★ (Skop AI)' : ''}
+                        {s.name} {s.isCustom ? '★ (AI Custom Scope)' : ''}
                       </option>
                     ))}
                   </select>
@@ -550,9 +546,9 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                     <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-2.5 text-[10px] flex items-start gap-2 text-slate-400">
                       <ShieldCheck size={13} className="text-purple-400 shrink-0 mt-0.5" />
                       <div>
-                        <span className="font-mono text-purple-300 font-bold">Kod CIDB: {currentScopeObj.cidbSpecialization}</span>
+                        <span className="font-mono text-purple-300 font-bold">CIDB Code: {currentScopeObj.cidbSpecialization}</span>
                         <span className="mx-1.5 text-slate-600">•</span>
-                        <span>Profil Risiko: <strong className="text-slate-300">{currentScopeObj.riskCategory}</strong></span>
+                        <span>Risk Profile: <strong className="text-slate-300">{currentScopeObj.riskCategory}</strong></span>
                       </div>
                     </div>
                   )}
@@ -562,26 +558,26 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                      Gred CIDB *
+                      CIDB Grade *
                     </label>
                     <select 
                       value={cidbGrade}
                       onChange={e => setCidbGrade(e.target.value)}
                       className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-purple-400 font-mono"
                     >
-                      <option value="G1">Gred G1 (Hingga RM200k)</option>
-                      <option value="G2">Gred G2 (Hingga RM500k)</option>
-                      <option value="G3">Gred G3 (Hingga RM1 Juta)</option>
-                      <option value="G4">Gred G4 (Hingga RM3 Juta)</option>
-                      <option value="G5">Gred G5 (Hingga RM5 Juta)</option>
-                      <option value="G6">Gred G6 (Hingga RM10 Juta)</option>
-                      <option value="G7">Gred G7 (Tiada Had Nilai)</option>
+                      <option value="G1">Grade G1 (Up to RM200k)</option>
+                      <option value="G2">Grade G2 (Up to RM500k)</option>
+                      <option value="G3">Grade G3 (Up to RM1 Million)</option>
+                      <option value="G4">Grade G4 (Up to RM3 Million)</option>
+                      <option value="G5">Grade G5 (Up to RM5 Million)</option>
+                      <option value="G6">Grade G6 (Up to RM10 Million)</option>
+                      <option value="G7">Grade G7 (Unlimited)</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                      Tarikh Luput Sijil CIDB
+                      CIDB Expiry Date *
                     </label>
                     <input 
                       type="date"
@@ -597,11 +593,11 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                      No. Polisi Insurans CAR *
+                      CAR Insurance Policy No. *
                     </label>
                     <input 
                       type="text"
-                      placeholder="cth: CAR/2026/MY-9801"
+                      placeholder="e.g. CAR/2026/MY-9801"
                       value={carPolicyNo}
                       onChange={e => setCarPolicyNo(e.target.value)}
                       className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-purple-400 uppercase font-mono placeholder:text-slate-500"
@@ -611,7 +607,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
 
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                      Tarikh Luput CAR *
+                      CAR Policy Expiry Date *
                     </label>
                     <input 
                       type="date"
@@ -627,7 +623,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                      Bilangan Pekerja Tapak *
+                      Site Workers Headcount *
                     </label>
                     <input 
                       type="number"
@@ -640,15 +636,15 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
 
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                      Status Saringan *
+                      Vetting Status *
                     </label>
                     <select
                       value={status}
                       onChange={e => setStatus(e.target.value as any)}
                       className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-purple-400"
                     >
-                      <option value="APPROVED">APPROVED (Diluluskan)</option>
-                      <option value="PENDING_DOCS">PENDING (Menunggu Dokumen)</option>
+                      <option value="APPROVED">APPROVED (Cleared for Site Entry)</option>
+                      <option value="PENDING_DOCS">PENDING (Pending Documents)</option>
                     </select>
                   </div>
                 </div>
@@ -660,14 +656,14 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                     onClick={() => setShowAddModal(false)}
                     className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
                   >
-                    Batal
+                    Cancel
                   </button>
                   <button
                     type="submit"
                     className="px-5 py-2.5 rounded-xl text-xs font-black text-slate-950 bg-purple-400 hover:bg-purple-300 uppercase tracking-wider shadow-lg shadow-purple-400/20 active:scale-95 transition-all flex items-center gap-1.5"
                   >
                     <Check size={14} />
-                    <span>Daftar &amp; Sahkan Masuk</span>
+                    <span>Register &amp; Clear Entry</span>
                   </button>
                 </div>
               </form>
@@ -687,7 +683,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                           Core AI Trade Copilot
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         </h4>
-                        <span className="text-[9px] text-purple-300 font-mono">Pakar Pengkhususan CIDB &amp; OSHA</span>
+                        <span className="text-[9px] text-purple-300 font-mono">CIDB &amp; OSHA Trade Specialization</span>
                       </div>
                     </div>
 
@@ -702,41 +698,41 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
 
                   {/* Chat Quick Trade Pills */}
                   <div className="py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-                    <span className="text-[9px] font-mono text-slate-500 shrink-0">Cadangan Pantas:</span>
+                    <span className="text-[9px] font-mono text-slate-500 shrink-0">Quick Suggestions:</span>
                     <button
                       type="button"
-                      onClick={() => handleSendChatMessage('Pasang panel solar bumbung & kerja kabel elektrik')}
+                      onClick={() => handleSendChatMessage('Roof solar PV installation and high voltage cable ladder')}
                       className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500 shrink-0"
                     >
                       ☀️ Solar PV
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleSendChatMessage('Kerja bore piling dan cerucuk asas')}
+                      onClick={() => handleSendChatMessage('Bored piling works and foundation load test')}
                       className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500 shrink-0"
                     >
-                      🚜 Piling
+                      🚜 Bored Piling
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleSendChatMessage('Turap jalan tar premix dan pasang kerb')}
+                      onClick={() => handleSendChatMessage('Premix asphalt road paving and roadside kerbs')}
                       className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500 shrink-0"
                     >
-                      🛣️ Jalan Tar
+                      🛣️ Asphalt Road
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleSendChatMessage('Pasang kaca fasad curtain wall di tingkat atas')}
+                      onClick={() => handleSendChatMessage('Curtain wall glass facade installation on higher levels')}
                       className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500 shrink-0"
                     >
-                      🪟 Kaca Fasad
+                      🪟 Glass Facade
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleSendChatMessage('Pemasangan sistem lif dan escalator')}
+                      onClick={() => handleSendChatMessage('Passenger lift and escalator installation')}
                       className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:border-purple-500 shrink-0"
                     >
-                      🛗 Lif
+                      🛗 Lift &amp; Hoist
                     </button>
                   </div>
 
@@ -760,25 +756,25 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                           {msg.suggestion && (
                             <div className="mt-2.5 pt-2 border-t border-slate-800 space-y-2 bg-slate-950/80 p-2.5 rounded-xl border border-purple-500/20">
                               <div className="flex items-center gap-1.5 text-purple-400 font-black text-[10px] uppercase">
-                                <Sparkles size={11} /> Cadangan Pengkhususan Core
+                                <Sparkles size={11} /> Core Specialization Proposal
                               </div>
 
                               <div className="space-y-1 text-[10px]">
                                 <div>
-                                  <span className="text-slate-400">Nama Skop: </span>
+                                  <span className="text-slate-400">Proposed Scope: </span>
                                   <strong className="text-white">{msg.suggestion.name}</strong>
                                 </div>
                                 <div>
-                                  <span className="text-slate-400">Pengkhususan CIDB: </span>
+                                  <span className="text-slate-400">CIDB Specialization: </span>
                                   <strong className="text-cyan-400 font-mono">{msg.suggestion.cidbSpecialization}</strong>
                                 </div>
                                 <div>
-                                  <span className="text-slate-400">Kategori Risiko: </span>
+                                  <span className="text-slate-400">Risk Profile: </span>
                                   <span className="text-amber-400 font-semibold">{msg.suggestion.riskCategory}</span>
                                 </div>
                                 {msg.suggestion.recommendedGrade && (
                                   <div>
-                                    <span className="text-slate-400">Cadangan Gred CIDB: </span>
+                                    <span className="text-slate-400">Recommended CIDB Grade: </span>
                                     <span className="text-purple-300 font-mono font-bold">{msg.suggestion.recommendedGrade}</span>
                                   </div>
                                 )}
@@ -790,7 +786,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                                 className="w-full mt-2 py-1.5 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20 transition-all active:scale-95"
                               >
                                 <Check size={12} />
-                                <span>+ Sahkan &amp; Cipta Skop Ini</span>
+                                <span>+ Confirm &amp; Create This Scope</span>
                               </button>
                             </div>
                           )}
@@ -801,7 +797,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                     {isThinking && (
                       <div className="flex items-center gap-2 text-slate-400 text-[10px] font-mono italic">
                         <Sparkles size={12} className="text-purple-400 animate-spin" />
-                        <span>Core sedang menganalisis kod pengkhususan CIDB...</span>
+                        <span>Core is analyzing CIDB trade specialization codes...</span>
                       </div>
                     )}
                   </div>
@@ -810,7 +806,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
                   <div className="pt-2 border-t border-slate-800 flex items-center gap-1.5 shrink-0">
                     <input 
                       type="text"
-                      placeholder="Taip kerja subcon (cth: pasang solar)..."
+                      placeholder="Describe work (e.g. solar panel installation)..."
                       value={chatInput}
                       onChange={e => setChatInput(e.target.value)}
                       onKeyDown={e => {

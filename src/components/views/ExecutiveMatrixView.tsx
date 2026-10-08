@@ -51,16 +51,16 @@ export const ExecutiveMatrixView: React.FC<ExecutiveMatrixViewProps> = ({
               {/* Full Statutory Contract Description Dropdown/Detail */}
               <div className="mt-2 p-3 bg-slate-950/60 border border-slate-800/80 rounded-2xl">
                 <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 block mb-1">
-                  Tajuk Rasmi Kontrak / Statutory Title:
+                  Official Statutory Contract Title:
                 </span>
-                <p className="text-[11px] text-slate-300 font-mono leading-relaxed line-clamp-3 hover:line-clamp-none transition-all cursor-pointer title-hint" title="Klik untuk lihat penuh">
+                <p className="text-[11px] text-slate-300 font-mono leading-relaxed line-clamp-3 hover:line-clamp-none transition-all cursor-pointer title-hint" title="Click to view full description">
                   {project.projectName}
                 </p>
               </div>
             </div>
 
             <p className="text-xs text-slate-400 leading-relaxed pt-1">
-              Scope: <strong className="text-emerald-400 font-bold">{project.projectScope.replace('_', ' ')}</strong> • Tingkat: <strong className="text-slate-200">{project.towerStoreys} Tingkat</strong> • Basemen: <strong className="text-slate-200">{project.basementLevels} Levels</strong>. Core mengaktifkan <strong className="text-emerald-400">{modules.length} modul statutori khusus</strong> (OSHA 2022, CDM 2024, DOE ESCP).
+              Scope: <strong className="text-emerald-400 font-bold">{project.projectScope.replace(/_/g, ' ')}</strong> • Storeys: <strong className="text-slate-200">{project.towerStoreys} Levels</strong> • Basement: <strong className="text-slate-200">{project.basementLevels} Levels</strong>. Core has enabled <strong className="text-emerald-400">{modules.length} tailored statutory modules</strong> (OSHA 2022, CDM 2024, DOE ESCP).
             </p>
           </div>
 
@@ -91,7 +91,7 @@ export const ExecutiveMatrixView: React.FC<ExecutiveMatrixViewProps> = ({
         </div>
       </div>
 
-      {/* 2. Interactive Site Twin & Zone Hazard Map Mock */}
+      {/* 2. Interactive Site Twin & Zone Hazard Map */}
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div>
@@ -110,10 +110,10 @@ export const ExecutiveMatrixView: React.FC<ExecutiveMatrixViewProps> = ({
         {/* Tactical Zone Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {[
-            { zone: 'Zon A: Menara Utama (Tower A)', level: 'Tingkat 1 - 45', status: 'Active Structural Work', color: 'border-blue-500/30 bg-blue-500/5' },
-            { zone: 'Zon B: Basement & Podium', level: 'B1 - B3 Excavation', status: 'Deep Dewatering & Silt Trap', color: 'border-emerald-500/30 bg-emerald-500/5' },
-            { zone: 'Zon C: Pintu Masuk & Hoarding', level: 'Ground Gate 1 & 2', status: 'Wash Trough & Flagman Active', color: 'border-amber-500/30 bg-amber-500/5' },
-            { zone: 'Zon D: Kabin, Kantin & CLQ', level: 'Welfare Quarters', status: 'Akta 446 Compliant • Fogging Done', color: 'border-purple-500/30 bg-purple-500/5' },
+            { zone: 'Zone A: Main Tower Blocks', level: 'Levels 1 - 45', status: 'Active Structural Work', color: 'border-blue-500/30 bg-blue-500/5' },
+            { zone: 'Zone B: Substructure & Podium', level: 'B1 - B3 Excavation', status: 'Deep Dewatering & Silt Trap', color: 'border-emerald-500/30 bg-emerald-500/5' },
+            { zone: 'Zone C: Site Access & Hoarding', level: 'Ground Gate 1 & 2', status: 'Wash Trough & Flagman Active', color: 'border-amber-500/30 bg-amber-500/5' },
+            { zone: 'Zone D: Site Office & CLQ', level: 'Welfare Quarters', status: 'Act 446 Compliant • Fogging Done', color: 'border-purple-500/30 bg-purple-500/5' },
           ].map((z, idx) => (
             <div key={idx} className={`p-4 rounded-2xl border ${z.color} flex flex-col justify-between gap-2 shadow-sm`}>
               <div>

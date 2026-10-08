@@ -21,8 +21,8 @@ const NATIONALITY_OPTIONS = [
   'Pakistan',
   'India',
   'Vietnam',
-  'Filipina',
-  'Lain-lain'
+  'Philippines',
+  'Other'
 ];
 
 export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ project }) => {
@@ -52,8 +52,8 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
   const [documentType, setDocumentType] = useState<'IC' | 'PASSPORT'>('PASSPORT');
   const [documentNo, setDocumentNo] = useState('');
   const [nationality, setNationality] = useState('Indonesia');
-  const [trade, setTrade] = useState('Pekerja Am (General Worker)');
-  const [subcontractor, setSubcontractor] = useState(subcontractors[0]?.name || project?.mainConName || 'KONTRAKTOR UTAMA');
+  const [trade, setTrade] = useState('General Worker');
+  const [subcontractor, setSubcontractor] = useState(subcontractors[0]?.name || project?.mainConName || 'MAIN CONTRACTOR');
   const [cidbGreenCardNo, setCidbGreenCardNo] = useState('');
   const [greenCardExpiry, setGreenCardExpiry] = useState('2027-12-31');
   const [inductionDate, setInductionDate] = useState(new Date().toISOString().split('T')[0]);
@@ -71,18 +71,18 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
 
   // Status helper
   const getCardStatus = (expiryDateStr: string) => {
-    if (!expiryDateStr) return { status: 'UNKNOWN', label: 'Tiada Tarikh', color: 'slate' };
+    if (!expiryDateStr) return { status: 'UNKNOWN', label: 'No Date', color: 'slate' };
     const today = new Date();
     const expiry = new Date(expiryDateStr);
     const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 3600 * 24));
 
     if (diffDays < 0) {
-      return { status: 'EXPIRED', label: 'Tamat Tempoh', color: 'rose', days: diffDays };
+      return { status: 'EXPIRED', label: 'Expired', color: 'rose', days: diffDays };
     }
     if (diffDays <= 30) {
-      return { status: 'EXPIRING_SOON', label: `Luput dlm ${diffDays} hari`, color: 'amber', days: diffDays };
+      return { status: 'EXPIRING_SOON', label: `Expires in ${diffDays}d`, color: 'amber', days: diffDays };
     }
-    return { status: 'VALID', label: 'Sah (Aktif)', color: 'emerald', days: diffDays };
+    return { status: 'VALID', label: 'Valid (Active)', color: 'emerald', days: diffDays };
   };
 
   // KPIs
@@ -129,8 +129,8 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
     setDocumentType('PASSPORT');
     setDocumentNo('');
     setNationality('Indonesia');
-    setTrade('Pekerja Am (General Worker)');
-    setSubcontractor(subcontractors[0]?.name || project?.mainConName || 'KONTRAKTOR UTAMA');
+    setTrade('General Worker');
+    setSubcontractor(subcontractors[0]?.name || project?.mainConName || 'MAIN CONTRACTOR');
     setCidbGreenCardNo('');
     setGreenCardExpiry('2027-12-31');
     setInductionDate(new Date().toISOString().split('T')[0]);
@@ -168,7 +168,6 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
     if (!fullName.trim() || !documentNo.trim()) return;
 
     if (editingWorkerId) {
-      // Edit
       setWorkers(prev => prev.map(w => {
         if (w.id === editingWorkerId) {
           return {
@@ -193,7 +192,6 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
         return w;
       }));
     } else {
-      // Add
       const newWorker: WorkerRecord = {
         id: `worker-${Date.now()}`,
         fullName: fullName.toUpperCase(),
@@ -219,21 +217,21 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
   };
 
   const handleDeleteWorker = (id: string, name: string) => {
-    if (confirm(`Adakah anda pasti mahu memadamkan rekod pekerja ${name}?`)) {
+    if (confirm(`Are you sure you want to delete worker record ${name}?`)) {
       setWorkers(prev => prev.filter(w => w.id !== id));
     }
   };
 
   const handleExportCSV = () => {
     if (workers.length === 0) {
-      alert('Tiada data pekerja untuk dieksport.');
+      alert('No worker records available to export.');
       return;
     }
 
     const headers = [
-      'Nama Penuh', 'Jenis Dokumen', 'No Dokumen', 'Warganegara', 'Subkontraktor',
-      'Trade / Jawatan', 'No Kad Hijau CIDB', 'Tarikh Luput Kad Hijau', 'Status Induksi',
-      'Tarikh Induksi', 'Jenis Darah', 'Waris Kecemasan', 'No Telefon Waris', 'Status'
+      'Full Name', 'Document Type', 'Document No', 'Nationality', 'Subcontractor',
+      'Trade / Designation', 'CIDB Green Card No', 'Green Card Expiry', 'Induction Status',
+      'Induction Date', 'Blood Type', 'Emergency Contact', 'Emergency Phone', 'Status'
     ];
 
     const rows = workers.map(w => [
@@ -245,7 +243,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
       `"${w.trade}"`,
       `"${w.cidbGreenCardNo}"`,
       `"${w.greenCardExpiry}"`,
-      `"${w.hasPassedInduction ? 'LULUS' : 'GAGAL'}"`,
+      `"${w.hasPassedInduction ? 'PASSED' : 'PENDING'}"`,
       `"${w.inductionDate}"`,
       `"${w.bloodType || '-'}"`,
       `"${w.emergencyContactName || '-'}"`,
@@ -257,7 +255,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `HSE_OS_Direktori_Pekerja_${project?.projectCode || 'Tapak'}_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `HSE_OS_Worker_Directory_${project?.projectCode || 'Site'}_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -271,16 +269,16 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
-              <Users size={12} /> Operasi Harian Tapak
+              <Users size={12} /> Daily Field Operations
             </span>
             <span className="text-xs text-slate-500 font-mono">•</span>
-            <span className="text-xs font-mono text-slate-400 font-bold">Direktori Pekerja &amp; Kad Hijau CIDB</span>
+            <span className="text-xs font-mono text-slate-400 font-bold">Worker Registry &amp; CIDB Green Card</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-            Pangkalan Data Pekerja &amp; Saringan Induksi Keselamatan
+            Site Worker Database &amp; Safety Induction Vetting
           </h2>
           <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            Pengesahan kad hijau CIDB (Akta 520), pendaftaran pasport/IC, kelulusan induksi tapak (*Safety Induction*), dan butiran waris kecemasan bagi semua pekerja kontraktor utama dan subkontraktor.
+            Statutory verification of CIDB Green Card (Act 520), Passport/IC identity, Safety Induction compliance, and next of kin emergency contacts for all principal and subcontractor personnel.
           </p>
         </div>
 
@@ -291,7 +289,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
             className="px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs flex items-center gap-2 border border-slate-700 transition-all"
           >
             <Download size={14} />
-            <span>Eksport CSV</span>
+            <span>Export CSV</span>
           </button>
 
           <button
@@ -300,7 +298,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
             className="px-5 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all"
           >
             <Plus size={16} />
-            <span>+ Daftar Pekerja Baharu</span>
+            <span>+ Register New Worker</span>
           </button>
         </div>
       </div>
@@ -310,40 +308,40 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
         
         {/* Total Registered */}
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
-          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Jumlah Pekerja Berdaftar</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Total Registered Personnel</span>
           <p className="text-3xl font-black text-white mt-1 font-mono">{totalWorkers}</p>
-          <span className="text-[10px] text-emerald-400 font-medium">{activeWorkers} Pekerja Aktif di Tapak</span>
+          <span className="text-[10px] text-emerald-400 font-medium">{activeWorkers} Active On Site</span>
         </div>
 
         {/* Induction Compliance */}
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
-          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Lulus Induksi Keselamatan</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Safety Induction Passed</span>
           <p className="text-3xl font-black text-cyan-400 mt-1 font-mono">
             {passedInductionCount} / {totalWorkers || 0}
           </p>
           <span className="text-[10px] text-cyan-400/80 font-medium">
-            {totalWorkers > 0 ? Math.round((passedInductionCount / totalWorkers) * 100) : 100}% Kadar Lulus Induksi
+            {totalWorkers > 0 ? Math.round((passedInductionCount / totalWorkers) * 100) : 100}% Induction Compliance
           </span>
         </div>
 
         {/* Expired Cards */}
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
-          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Kad Hijau CIDB Tamat Tempoh</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Expired CIDB Green Cards</span>
           <p className={`text-3xl font-black mt-1 font-mono ${expiredCardsCount > 0 ? 'text-rose-400 animate-pulse' : 'text-slate-200'}`}>
             {expiredCardsCount}
           </p>
           <span className={`text-[10px] font-medium ${expiredCardsCount > 0 ? 'text-rose-400' : 'text-slate-500'}`}>
-            {expiredCardsCount > 0 ? 'Dilarang Masuk (Akta 520)' : 'Tiada Kad Tamat Tempoh'}
+            {expiredCardsCount > 0 ? 'Barred From Site (Act 520)' : 'Zero Expired Cards'}
           </span>
         </div>
 
         {/* Expiring Soon */}
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl">
-          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Bakal Luput (&lt;30 Hari)</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Expiring Soon (&lt;30 Days)</span>
           <p className={`text-3xl font-black mt-1 font-mono ${expiringSoonCount > 0 ? 'text-amber-400' : 'text-slate-200'}`}>
             {expiringSoonCount}
           </p>
-          <span className="text-[10px] text-amber-400/80 font-medium">Perlu Pembaharuan CIDB Segera</span>
+          <span className="text-[10px] text-amber-400/80 font-medium">Immediate CIDB Renewal Required</span>
         </div>
       </div>
 
@@ -356,7 +354,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
             <Search size={14} className="text-slate-500 absolute left-3 top-3" />
             <input 
               type="text"
-              placeholder="Cari nama pekerja, No IC/Pasport, Kad Hijau, atau Subcon..."
+              placeholder="Search worker name, IC/Passport, Green Card, or Subcon..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white outline-none focus:border-emerald-400 placeholder:text-slate-500"
@@ -370,7 +368,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               onChange={e => setFilterSubcon(e.target.value)}
               className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-300 outline-none focus:border-emerald-400"
             >
-              <option value="ALL">Semua Subkontraktor</option>
+              <option value="ALL">All Subcontractors</option>
               {subcontractors.map(s => (
                 <option key={s.id} value={s.name}>{s.name}</option>
               ))}
@@ -384,7 +382,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               onChange={e => setFilterNationality(e.target.value)}
               className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-300 outline-none focus:border-emerald-400"
             >
-              <option value="ALL">Semua Warganegara</option>
+              <option value="ALL">All Nationalities</option>
               {NATIONALITY_OPTIONS.map(n => (
                 <option key={n} value={n}>{n}</option>
               ))}
@@ -398,11 +396,11 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               onChange={e => setFilterStatus(e.target.value)}
               className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-300 outline-none focus:border-emerald-400"
             >
-              <option value="ALL">Semua Status</option>
-              <option value="ACTIVE">Pekerja Aktif</option>
-              <option value="EXPIRED">Kad Hijau Tamat</option>
-              <option value="EXPIRING_SOON">Bakal Luput (&lt;30 Hari)</option>
-              <option value="INACTIVE">Tidak Aktif</option>
+              <option value="ALL">All Statuses</option>
+              <option value="ACTIVE">Active Personnel</option>
+              <option value="EXPIRED">Expired Green Card</option>
+              <option value="EXPIRING_SOON">Expiring Soon (&lt;30 Days)</option>
+              <option value="INACTIVE">Inactive</option>
             </select>
           </div>
         </div>
@@ -410,7 +408,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
         {/* Quick Trade Filter Pills */}
         {existingTrades.length > 0 && (
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
-            <span className="text-[10px] font-mono text-slate-500 shrink-0">Pilihan Trade:</span>
+            <span className="text-[10px] font-mono text-slate-500 shrink-0">Trades:</span>
             <button
               type="button"
               onClick={() => setFilterTrade('ALL')}
@@ -418,7 +416,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                 filterTrade === 'ALL' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
               }`}
             >
-              Semua
+              All
             </button>
             {existingTrades.map(t => (
               <button
@@ -440,17 +438,17 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
       <div className="space-y-3">
         <div className="flex items-center justify-between px-1">
           <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
-            <Users size={14} className="text-emerald-400" /> Senarai Pekerja Berdaftar ({filteredWorkers.length} Orang)
+            <Users size={14} className="text-emerald-400" /> Registered Personnel Directory ({filteredWorkers.length} Workers)
           </h3>
-          <span className="text-[10px] text-slate-500 font-mono">Penyegerakan Google Cloud Aktif</span>
+          <span className="text-[10px] text-slate-500 font-mono">Google Cloud Sync Active</span>
         </div>
 
         {filteredWorkers.length === 0 ? (
           <div className="bg-slate-900 border-2 border-dashed border-slate-800 rounded-3xl p-12 text-center space-y-3">
             <Users size={36} className="text-slate-600 mx-auto" />
-            <h4 className="text-sm font-bold text-slate-300">Tiada Rekod Pekerja Ditemui</h4>
+            <h4 className="text-sm font-bold text-slate-300">No Worker Records Found</h4>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Belum ada pekerja didaftarkan atau tiada padanan carian. Klik butang "+ Daftar Pekerja Baharu" di atas untuk menambah pekerja pertama.
+              No workers registered yet or matching criteria. Click "+ Register New Worker" above to add the first personnel.
             </p>
           </div>
         ) : (
@@ -459,13 +457,13 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-950/70 border-b border-slate-800 text-[10px] font-black uppercase tracking-wider text-slate-400">
                   <tr>
-                    <th className="px-4 py-3.5">Nama Pekerja &amp; Dokumen</th>
-                    <th className="px-4 py-3.5">Syarikat Subkontraktor</th>
-                    <th className="px-4 py-3.5">Trade / Jawatan</th>
-                    <th className="px-4 py-3.5">Kad Hijau CIDB</th>
-                    <th className="px-4 py-3.5">Status Induksi</th>
-                    <th className="px-4 py-3.5">Waris / Kecemasan</th>
-                    <th className="px-4 py-3.5 text-right">Tindakan</th>
+                    <th className="px-4 py-3.5">Worker Name &amp; ID</th>
+                    <th className="px-4 py-3.5">Subcontractor Company</th>
+                    <th className="px-4 py-3.5">Trade / Role</th>
+                    <th className="px-4 py-3.5">CIDB Green Card</th>
+                    <th className="px-4 py-3.5">Induction Status</th>
+                    <th className="px-4 py-3.5">Next of Kin / Contact</th>
+                    <th className="px-4 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/80 text-slate-300">
@@ -513,7 +511,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                           <div className="space-y-1">
                             <div className="flex items-center gap-1.5 font-mono text-[11px] font-bold text-slate-200">
                               <CreditCard size={12} className="text-purple-400" />
-                              <span>{worker.cidbGreenCardNo || 'TIADA NO KAD'}</span>
+                              <span>{worker.cidbGreenCardNo || 'NO CARD NUMBER'}</span>
                             </div>
                             <div>
                               <span className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${
@@ -523,7 +521,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                                   ? 'bg-amber-500/10 text-amber-400 border-amber-500/30 animate-pulse'
                                   : 'bg-rose-500/10 text-rose-400 border-rose-500/30 animate-pulse'
                               }`}>
-                                {card.label} (shg: {worker.greenCardExpiry})
+                                {card.label} (Exp: {worker.greenCardExpiry})
                               </span>
                             </div>
                           </div>
@@ -538,10 +536,10 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                                 : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
                             }`}>
                               {worker.hasPassedInduction ? <CheckCircle2 size={10} /> : <XCircle size={10} />}
-                              <span>{worker.hasPassedInduction ? 'LULUS INDUKSI' : 'BELUM INDUKSI'}</span>
+                              <span>{worker.hasPassedInduction ? 'PASSED INDUCTION' : 'PENDING INDUCTION'}</span>
                             </span>
                             <span className="text-[9px] text-slate-500 font-mono block">
-                              Tarikh: {worker.inductionDate}
+                              Date: {worker.inductionDate}
                             </span>
                           </div>
                         </td>
@@ -560,7 +558,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                             )}
                             {worker.bloodType && (
                               <span className="text-[9px] font-bold text-rose-400 font-mono">
-                                Darah: {worker.bloodType}
+                                Blood: {worker.bloodType}
                               </span>
                             )}
                           </div>
@@ -573,7 +571,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                               type="button"
                               onClick={() => handleOpenEditModal(worker)}
                               className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
-                              title="Kemaskini data pekerja"
+                              title="Edit worker record"
                             >
                               <Edit3 size={13} />
                             </button>
@@ -581,7 +579,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                               type="button"
                               onClick={() => handleDeleteWorker(worker.id, worker.fullName)}
                               className="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-rose-400 hover:bg-slate-700 transition-all"
-                              title="Padam pekerja"
+                              title="Delete worker"
                             >
                               <Trash2 size={13} />
                             </button>
@@ -598,7 +596,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
         )}
       </div>
 
-      {/* 5. Modal: Daftar / Kemaskini Pekerja */}
+      {/* 5. Modal: Register / Edit Worker */}
       {showModal && (
         <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-7 max-w-2xl w-full space-y-5 shadow-2xl my-auto max-h-[90vh] overflow-y-auto custom-scrollbar">
@@ -611,9 +609,9 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                 </div>
                 <div>
                   <h3 className="text-base font-black text-white uppercase tracking-wide">
-                    {editingWorkerId ? 'Kemaskini Butiran Pekerja' : 'Daftar Pekerja Baharu'}
+                    {editingWorkerId ? 'Update Worker Record' : 'Register New Site Worker'}
                   </h3>
-                  <span className="text-[10px] text-slate-400 font-medium">Saringan Kad Hijau CIDB &amp; Induksi Keselamatan</span>
+                  <span className="text-[10px] text-slate-400 font-medium">CIDB Green Card Verification &amp; Safety Induction</span>
                 </div>
               </div>
 
@@ -630,11 +628,11 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               {/* Full Name */}
               <div>
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                  Nama Penuh Pekerja (Mengikut IC / Pasport) *
+                  Full Worker Name (As in IC / Passport) *
                 </label>
                 <input 
                   type="text"
-                  placeholder="cth: MD ALAMIN HOSSAIN / MUHAMMAD AMIRUL"
+                  placeholder="e.g. MD ALAMIN HOSSAIN / MUHAMMAD AMIRUL"
                   value={fullName}
                   onChange={e => setFullName(e.target.value)}
                   className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white outline-none focus:border-emerald-400 uppercase placeholder:text-slate-500"
@@ -646,25 +644,25 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Jenis Dokumen *
+                    Document Type *
                   </label>
                   <select
                     value={documentType}
                     onChange={e => setDocumentType(e.target.value as any)}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-emerald-400"
                   >
-                    <option value="PASSPORT">Pasport Antarabangsa</option>
-                    <option value="IC">MyKad (Warganegara)</option>
+                    <option value="PASSPORT">International Passport</option>
+                    <option value="IC">MyKad (Citizen)</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    No. Dokumen / Pasport *
+                    Document / Passport No *
                   </label>
                   <input 
                     type="text"
-                    placeholder="cth: A12345678 / 920101-07-5555"
+                    placeholder="e.g. A12345678 / 920101-07-5555"
                     value={documentNo}
                     onChange={e => setDocumentNo(e.target.value)}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white outline-none focus:border-emerald-400 uppercase"
@@ -674,7 +672,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
 
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Warganegara *
+                    Nationality *
                   </label>
                   <select
                     value={nationality}
@@ -692,7 +690,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Syarikat Majikan / Subkontraktor *
+                    Employer / Subcontractor *
                   </label>
                   <select
                     value={subcontractor}
@@ -703,8 +701,8 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                       <option key={s.id} value={s.name}>{s.name}</option>
                     ))}
                     {subcontractors.length === 0 && (
-                      <option value={project?.mainConName || 'KONTRAKTOR UTAMA'}>
-                        {project?.mainConName || 'KONTRAKTOR UTAMA'}
+                      <option value={project?.mainConName || 'MAIN CONTRACTOR'}>
+                        {project?.mainConName || 'MAIN CONTRACTOR'}
                       </option>
                     )}
                   </select>
@@ -712,11 +710,11 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
 
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Trade / Jawatan Tapak *
+                    Trade / Site Designation *
                   </label>
                   <input 
                     type="text"
-                    placeholder="cth: Pemasang Perancah / Barbender"
+                    placeholder="e.g. Scaffolder / Barbender"
                     value={trade}
                     onChange={e => setTrade(e.target.value)}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-emerald-400"
@@ -729,11 +727,11 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    No. Kad Hijau CIDB *
+                    CIDB Green Card No *
                   </label>
                   <input 
                     type="text"
-                    placeholder="cth: CIDB-98765432"
+                    placeholder="e.g. CIDB-98765432"
                     value={cidbGreenCardNo}
                     onChange={e => setCidbGreenCardNo(e.target.value)}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white outline-none focus:border-emerald-400 uppercase"
@@ -743,7 +741,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
 
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Tarikh Luput Kad Hijau *
+                    Green Card Expiry Date *
                   </label>
                   <input 
                     type="date"
@@ -759,7 +757,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Tarikh Induksi Tapak *
+                    Site Induction Date *
                   </label>
                   <input 
                     type="date"
@@ -772,21 +770,21 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
 
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Status Induksi *
+                    Induction Status *
                   </label>
                   <select
                     value={hasPassedInduction ? 'YES' : 'NO'}
                     onChange={e => setHasPassedInduction(e.target.value === 'YES')}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-emerald-400"
                   >
-                    <option value="YES">✓ Lulus Induksi</option>
-                    <option value="NO">✗ Belum / Gagal</option>
+                    <option value="YES">✓ Passed Induction</option>
+                    <option value="NO">✗ Pending / Failed</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Kumpulan Darah
+                    Blood Group
                   </label>
                   <select
                     value={bloodType}
@@ -797,7 +795,7 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="AB">AB</option>
-                    <option value="UNKNOWN">Tidak Pasti</option>
+                    <option value="UNKNOWN">Unknown</option>
                   </select>
                 </div>
               </div>
@@ -806,11 +804,11 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Nama Waris Kecemasan (Next of Kin)
+                    Emergency Contact Name (Next of Kin)
                   </label>
                   <input 
                     type="text"
-                    placeholder="cth: SITI FATIMAH (ISTERI)"
+                    placeholder="e.g. SITI FATIMAH (SPOUSE)"
                     value={emergencyContactName}
                     onChange={e => setEmergencyContactName(e.target.value)}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-emerald-400 uppercase"
@@ -819,11 +817,11 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
 
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    No. Telefon Waris Kecemasan
+                    Emergency Contact Phone No.
                   </label>
                   <input 
                     type="text"
-                    placeholder="cth: +6012-3456789"
+                    placeholder="e.g. +6012-3456789"
                     value={emergencyContactPhone}
                     onChange={e => setEmergencyContactPhone(e.target.value)}
                     className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white outline-none focus:border-emerald-400"
@@ -838,13 +836,13 @@ export const WorkerDirectoryView: React.FC<WorkerDirectoryViewProps> = ({ projec
                   onClick={() => setShowModal(false)}
                   className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800"
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-2.5 rounded-xl text-xs font-black text-slate-950 bg-emerald-400 hover:bg-emerald-300 uppercase tracking-wider shadow-lg shadow-emerald-400/20 active:scale-95 transition-all"
                 >
-                  {editingWorkerId ? 'Simpan Perubahan' : 'Daftar & Sahkan Masuk'}
+                  {editingWorkerId ? 'Save Changes' : 'Register & Authorize Entry'}
                 </button>
               </div>
 

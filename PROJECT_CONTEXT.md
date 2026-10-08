@@ -148,3 +148,23 @@ Selaras dengan perbincangan strategik bersama pengguna, modul operasi praktikal 
 
 
 
+
+
+---
+
+## 6. Complete English UI Rollout (8 October 2026)
+Following user request to standardize the entire operating system to professional international English:
+- **100% User Interface Translated to English**:
+  - `SidebarCommandRail.tsx`: Categories "Daily Field Operations" and "Statutory Governance & Reports" with all sub-menu labels.
+  - `CoreBrainHeader.tsx` & `ActionRadarPane.tsx`: Site Health, Risk Radar, Watchdog AI advisories, and audit status levels.
+  - `HSECoreEngine.ts`: Module syntheses, activation reasons, and statutory advisories (Red Tag, Silt Trap TSS, Aedes Fogging, Expired PTWs, CIDB Green Cards, Site Induction).
+  - `DailyManpowerView.tsx`: Shift labels (Day/Night), site weather (Morning/Afternoon), 12 trade categories (General Workers, Scaffolders, Bar Benders, etc.), "Copy Yesterday" button, and muster history ledger.
+  - `WorkerDirectoryView.tsx`: Worker directory, CIDB Green Card verification (Valid, Expiring Soon, Expired), site induction status, filters, and new worker registration modal.
+  - `CorporateSubconPillarView.tsx`: Subcontractor vetting, CAR insurance, approval statuses, and interactive Core AI Trade Specialist Copilot.
+  - `ExecutiveMatrixView.tsx`: Executive KPI metrics, Site Digital Twin zones, and active module cards.
+  - `DoshOpsPillarView.tsx`: High-risk Permit to Work (PTW) management, 7-Day statutory inspections (OSHA 2022), Green/Red tag toggles, Safe Man-Hours calculator (A × B × C = D), and permit issuance modal.
+  - `CdmStudioPillarView.tsx`: Duty Holders statutory directory, 500 person-days threshold evaluation, PCI/CPP dossier studio, and official printable DOSH Form 103 (JKKP 103) PDF view.
+  - `DoeEnvPillarView.tsx`: Silt trap TSS water discharge testing, wash trough jet pump controls, and 180-day e-SWIS scheduled waste inventory.
+  - `HealthWelfarePillarView.tsx`: Cyclical Aedes mosquito fogging (Act 130), WBGT heat stress index, Act 446 CLQ worker quarters capacity, and fogging log modal.
+  - `ReportsAnalyticsPillarView.tsx`: Monthly Section 29 OSHA 1994 compliance report generator, Zero LTI & Fatality executive summary, and statutory print-ready modal.
+  - `ProjectInceptionWizard.tsx`: Day-1 onboarding wizard with project classification, technical hazard parameters, and autonomous blueprint activation.

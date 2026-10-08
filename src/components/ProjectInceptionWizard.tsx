@@ -105,7 +105,7 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
             <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 flex items-start gap-3">
               <Sparkles size={20} className="text-emerald-400 shrink-0 mt-0.5" />
               <p className="text-xs text-slate-300 leading-relaxed">
-                <strong className="text-white">Core Insight:</strong> Masukkan maklumat statutori projek di bawah. HSE OS Core akan menganalisis parameter ini untuk menentukan modul pematuhan DOSH, DOE/JAS, CDM 2024, dan amaran proaktif yang diperlukan.
+                <strong className="text-white">Core Insight:</strong> Provide statutory project parameters below. The HSE OS Core Engine will analyze these specifications to synthesize statutory compliance modules for DOSH, DOE, CDM 2024, and generate Day-1 proactive alerts.
               </p>
             </div>
 
@@ -116,10 +116,10 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {[
-                  { id: 'LANDED_RESIDENTIAL', label: 'Landed Housing & Terraced', desc: 'Rumah Teres / Berkembar / Banglo' },
-                  { id: 'HIGH_RISE', label: 'High-Rise Commercial / Residential', desc: '>4 Storeys / Menara / Kondominium' },
-                  { id: 'INFRASTRUCTURE', label: 'Infrastructure & Roadworks', desc: 'Jalan Raya / Jambatan / Saliran' },
-                  { id: 'INDUSTRIAL_WAREHOUSE', label: 'Industrial Warehouse & Plant', desc: 'Kilang / Gudang Struktur Keluli' },
+                  { id: 'LANDED_RESIDENTIAL', label: 'Landed Housing & Terraced', desc: 'Terrace Houses / Semi-Detached / Bungalows' },
+                  { id: 'HIGH_RISE', label: 'High-Rise Commercial / Residential', desc: '>4 Storeys / Towers / Condominiums' },
+                  { id: 'INFRASTRUCTURE', label: 'Infrastructure & Roadworks', desc: 'Highways / Bridges / Civil Drainage' },
+                  { id: 'INDUSTRIAL_WAREHOUSE', label: 'Industrial Warehouse & Plant', desc: 'Factories / Steel Structure Warehouses' },
                 ].map(item => (
                   <button
                     key={item.id}
@@ -127,7 +127,7 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
                     onClick={() => {
                       setProjectScope(item.id as ProjectScope);
                       if (item.id === 'LANDED_RESIDENTIAL') {
-                        setTowerStoreys(2); // Default 2 tingkat rumah teres
+                        setTowerStoreys(2); // Default 2 storeys
                         setHasDeepExcavation(false);
                         setBasementLevels(0);
                       }
@@ -150,17 +150,17 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="sm:col-span-2">
                   <label className="block text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-1">
-                    Short Project Name (Untuk Paparan Dashboard &amp; Header) *
+                    Short Project Title (For Dashboard &amp; Header Display) *
                   </label>
                   <input 
                     type="text"
-                    placeholder="cth: ECO SUN PHASE 2 (90 UNIT RUMAH TERES)"
+                    placeholder="e.g. ECO SUN PHASE 2 (90 UNITS 2-STOREY TERRACE)"
                     value={shortTitle}
                     onChange={e => setShortTitle(e.target.value)}
                     className="w-full bg-slate-800/80 border border-emerald-500/40 rounded-xl px-4 py-2.5 text-xs font-bold text-white outline-none focus:border-emerald-400 uppercase ring-1 ring-emerald-500/20"
                   />
                   <span className="text-[9px] text-slate-400 mt-1 block">
-                    Nama ringkas &amp; kemas supaya dashboard tidak serabut.
+                    Clean and concise title for optimal dashboard readability.
                   </span>
                 </div>
                 <div>
@@ -178,7 +178,7 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
 
               <div>
                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">
-                  Full Statutory Project Contract Description (Tajuk Penuh Dokumen JKKP / Kontrak) *
+                  Full Statutory Project Contract Description (Contract &amp; DOSH Formal Title) *
                 </label>
                 <textarea 
                   rows={3}
@@ -244,13 +244,13 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
             {/* Technical Parameters: Heights & Excavations */}
             <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-4 space-y-4">
               <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
-                <Layers size={14} /> {projectScope === 'LANDED_RESIDENTIAL' ? 'Parameter Projek Perumahan & Tapak' : 'Structural & Civil Hazard Parameters'}
+                <Layers size={14} /> {projectScope === 'LANDED_RESIDENTIAL' ? 'Housing & Site Parameters' : 'Structural & Civil Hazard Parameters'}
               </span>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold text-slate-400 mb-1">
-                    {projectScope === 'LANDED_RESIDENTIAL' ? 'Tingkat Rumah (Storeys)' : 'Tower Storeys'}
+                    {projectScope === 'LANDED_RESIDENTIAL' ? 'Building Storeys' : 'Tower Storeys'}
                   </label>
                   <input 
                     type="number"
@@ -259,7 +259,7 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
                     className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs font-bold text-white font-mono"
                   />
                   {projectScope === 'LANDED_RESIDENTIAL' && (
-                    <span className="text-[9px] text-slate-500 block mt-1">cth: 2 Tingkat (Teres)</span>
+                    <span className="text-[9px] text-slate-500 block mt-1">e.g. 2 Storeys (Terrace)</span>
                   )}
                 </div>
 

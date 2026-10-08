@@ -36,7 +36,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
     {
       id: 'ws-1',
       date: new Date().toISOString().split('T')[0],
-      location: 'Silt Trap 1 (Pelepasan Akhir Ke Parit Monsun)',
+      location: 'Silt Trap 1 (Final Discharge to Monsoon Drain)',
       tssValue: 38,
       phValue: 7.2,
       turbidityNtu: 45,
@@ -54,8 +54,8 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
     {
       id: 'sw-1',
       code: 'SW 305',
-      name: 'Minyak Pelincir Terpakai (Spent Lubricant Oil)',
-      quantity: '2 Drum (400 Liter)',
+      name: 'Spent Lubricant Oil',
+      quantity: '2 Drums (400 Liters)',
       dateIn: '2026-09-20',
       maxDays: 180,
       daysRemaining: 162,
@@ -64,8 +64,8 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
     {
       id: 'sw-2',
       code: 'SW 410',
-      name: 'Penapis Minyak Lori Terpakai (Spent Oil Filters)',
-      quantity: '1 Tong (50 kg)',
+      name: 'Spent Truck Oil Filters',
+      quantity: '1 Bin (50 kg)',
       dateIn: '2026-09-25',
       maxDays: 180,
       daysRemaining: 167,
@@ -79,7 +79,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
 
   // Modals
   const [showSampleModal, setShowSampleModal] = useState(false);
-  const [sampleLocation, setSampleLocation] = useState('Silt Trap 1 (Pelepasan Akhir)');
+  const [sampleLocation, setSampleLocation] = useState('Silt Trap 1 (Final Discharge)');
   const [sampleTss, setSampleTss] = useState<number>(35);
   const [samplePh, setSamplePh] = useState<number>(7.0);
   const [sampleTurbidity, setSampleTurbidity] = useState<number>(40);
@@ -87,8 +87,8 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
 
   const [showWasteModal, setShowWasteModal] = useState(false);
   const [wasteCode, setWasteCode] = useState('SW 305');
-  const [wasteName, setWasteName] = useState('Minyak Hidraulik Terpakai');
-  const [wasteQty, setWasteQty] = useState('1 Drum (200 Liter)');
+  const [wasteName, setWasteName] = useState('Spent Hydraulic Oil');
+  const [wasteQty, setWasteQty] = useState('1 Drum (200 Liters)');
 
   useEffect(() => {
     ProjectService.saveData('doe_water_samples', samplesList, project?.id);
@@ -143,13 +143,13 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
               <Droplets size={12} /> Statutory Pillar 3
             </span>
             <span className="text-xs text-slate-500 font-mono">•</span>
-            <span className="text-xs font-mono text-slate-400 font-bold">Jabatan Alam Sekitar (DOE / JAS)</span>
+            <span className="text-xs font-mono text-slate-400 font-bold">Department of Environment (DOE)</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-            ESCP, Kawalan Kelodak &amp; Pelupusan Buangan Berjadual
+            ESCP, Silt Control &amp; Scheduled Waste Management
           </h2>
           <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            Pemantauan pelan kawalan hakisan dan kelodak tanah (ESCP), paras TSS air pelepasan, sistem basuh tayar lori (wash trough), dan pengurusan buangan berjadual e-SWIS 180 hari.
+            Erosion &amp; Sediment Control Plan (ESCP) compliance, silt trap water discharge TSS limits, wash trough jet systems, and 180-day e-SWIS scheduled waste custody.
           </p>
         </div>
 
@@ -160,7 +160,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
             className="px-4 py-2.5 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg shadow-emerald-400/20 active:scale-95 transition-all"
           >
             <Plus size={16} />
-            <span>+ Ujian Air TSS</span>
+            <span>+ Water TSS Test</span>
           </button>
 
           <button
@@ -169,7 +169,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
             className="px-4 py-2.5 rounded-2xl bg-blue-400 hover:bg-blue-300 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg shadow-blue-400/20 active:scale-95 transition-all"
           >
             <Plus size={16} />
-            <span>+ e-SWIS Buangan</span>
+            <span>+ e-SWIS Waste</span>
           </button>
         </div>
       </div>
@@ -179,11 +179,11 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
         {/* Silt Trap TSS Reading */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Pelepasan Air Silt Trap (TSS)</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Silt Trap Discharge Water (TSS)</span>
             <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border ${
               latestSample.tssValue <= 50 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20 animate-pulse'
             }`}>
-              HAD JAS &lt; 50 mg/L
+              DOE LIMIT &lt; 50 mg/L
             </span>
           </div>
           <p className="text-3xl font-black text-emerald-400 font-mono mt-1">
@@ -195,45 +195,45 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
               style={{ width: `${Math.min(100, (latestSample.tssValue / 50) * 100)}%` }} 
             />
           </div>
-          <p className="text-[10px] text-slate-400">pH Air: <strong>{latestSample.phValue}</strong> (Normal 6.0 - 9.0) • {latestSample.status}</p>
+          <p className="text-[10px] text-slate-400">Water pH: <strong>{latestSample.phValue}</strong> (Normal 6.0 - 9.0) • {latestSample.status}</p>
         </div>
 
         {/* Wash Trough / Tyre Washing Bay */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Wash Trough Jet Pump (Pintu Keluar)</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Wash Trough Jet Pump (Site Egress)</span>
             <button
               type="button"
               onClick={() => setWashTroughPumpActive(!washTroughPumpActive)}
               className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border cursor-pointer ${
                 washTroughPumpActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20 hover:bg-rose-500/20'
               }`}
-              title="Klik untuk ubah status pump"
+              title="Click to toggle pump status"
             >
               {washTroughPumpActive ? 'ONLINE AUTO ✓' : 'MAINTENANCE ⚠'}
             </button>
           </div>
           <p className="text-sm font-bold text-white mt-1">
-            {washTroughPumpActive ? 'Sistem Pancutan Tekanan Tinggi Berfungsi' : 'Pam Jet Dalam Pemeriksaan / Cuci Enapan'}
+            {washTroughPumpActive ? 'High-Pressure Spray System Operational' : 'Jet Pump Under Inspection / Silt Desludging'}
           </p>
           <p className="text-[11px] text-slate-400 leading-relaxed">
-            Menghalang lori membawa tanah keluar ke Lebuhraya Bandar Cassia. Menepati syarat kelulusan Pelan ESCP JAS.
+            Prevents trucks from carrying soil and mud onto Bandar Cassia arterial roads. Complies with DOE ESCP conditions.
           </p>
         </div>
 
         {/* Scheduled Waste 180 Days Tracker */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Buangan Berjadual (eSWIS)</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Scheduled Waste (e-SWIS)</span>
             <span className="text-[9px] font-mono font-bold bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">
-              {wasteList.length} LOT AKTIF
+              {wasteList.length} ACTIVE LOTS
             </span>
           </div>
           <p className="text-xl font-black text-white font-mono mt-1">
-            {wasteList.length > 0 ? `${180 - (wasteList[0]?.daysRemaining || 180)} / 180` : '0 / 180'} <span className="text-xs font-normal text-slate-400">Hari Simpanan</span>
+            {wasteList.length > 0 ? `${180 - (wasteList[0]?.daysRemaining || 180)} / 180` : '0 / 180'} <span className="text-xs font-normal text-slate-400">Storage Days</span>
           </p>
           <p className="text-[11px] text-slate-400 leading-relaxed">
-            Minyak hitam terpakai &amp; sisa hidraulik disimpan dalam kawasan berbumbung berlesen sebelum diserah kepada Kualiti Alam.
+            Spent lubricants and hydraulic residues stored in a sheltered bunded compound prior to licensed contractor collection.
           </p>
         </div>
       </div>
@@ -244,9 +244,9 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <h3 className="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-              <Waves size={14} /> Log Ujian Pelepasan Air Silt Trap (ESCP)
+              <Waves size={14} /> Silt Trap Discharge Water Test Log (ESCP)
             </h3>
-            <span className="text-[10px] text-slate-400 font-mono">Had JAS: 50 mg/L</span>
+            <span className="text-[10px] text-slate-400 font-mono">DOE Limit: 50 mg/L</span>
           </div>
 
           <div className="space-y-2">
@@ -254,7 +254,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
               <div key={s.id} className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex items-center justify-between gap-3 text-xs">
                 <div>
                   <span className="font-bold text-white block">{s.location}</span>
-                  <span className="text-[10px] text-slate-400 font-mono">Tarikh: {s.date} • pH: {s.phValue} • Diuji: {s.testedBy}</span>
+                  <span className="text-[10px] text-slate-400 font-mono">Date: {s.date} • pH: {s.phValue} • Tested By: {s.testedBy}</span>
                 </div>
                 <div className="text-right shrink-0">
                   <span className={`font-mono font-black text-sm block ${s.tssValue <= 50 ? 'text-emerald-400' : 'text-rose-400'}`}>
@@ -271,7 +271,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <h3 className="text-xs font-black uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
-              <Activity size={14} /> Inventori Buangan Berjadual (Had 180-Hari)
+              <Activity size={14} /> Scheduled Waste Inventory (180-Day Limit)
             </h3>
             <span className="text-[10px] text-slate-400 font-mono">e-Consignment Ready</span>
           </div>
@@ -286,13 +286,13 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
                     </span>
                     <span className="font-bold text-white">{w.name}</span>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-mono block mt-0.5">Kuantiti: {w.quantity} • Tarikh Masuk: {w.dateIn}</span>
+                  <span className="text-[10px] text-slate-400 font-mono block mt-0.5">Quantity: {w.quantity} • Date In: {w.dateIn}</span>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="font-mono font-black text-xs text-amber-400 block">
-                    Baki {w.daysRemaining} Hari
+                    {w.daysRemaining} Days Left
                   </span>
-                  <span className="text-[9px] uppercase font-bold text-emerald-400">Patuh JAS</span>
+                  <span className="text-[9px] uppercase font-bold text-emerald-400">DOE Compliant</span>
                 </div>
               </div>
             ))}
@@ -300,20 +300,20 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
         </div>
       </div>
 
-      {/* MODAL: UJIAN AIR TSS BARU */}
+      {/* MODAL: NEW WATER TEST SAMPLE */}
       {showSampleModal && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-black text-white flex items-center gap-2">
-                <Droplets size={18} className="text-emerald-400" /> Rekod Ujian Pelepasan Air (TSS)
+                <Droplets size={18} className="text-emerald-400" /> Record Water Discharge Test (TSS)
               </h3>
               <button onClick={() => setShowSampleModal(false)} className="text-slate-400 hover:text-white text-xs font-bold">✕</button>
             </div>
 
             <form onSubmit={handleAddSample} className="space-y-4">
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Lokasi Persampelan *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Sampling Location *</label>
                 <input 
                   type="text"
                   value={sampleLocation}
@@ -325,7 +325,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Bacaan TSS (mg/L) *</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">TSS Reading (mg/L) *</label>
                   <input 
                     type="number"
                     value={sampleTss}
@@ -333,11 +333,11 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-emerald-400 font-mono"
                     required
                   />
-                  <span className="text-[9px] text-slate-500">Maks 50 mg/L</span>
+                  <span className="text-[9px] text-slate-500">Max 50 mg/L</span>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Nilai pH *</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">pH Value *</label>
                   <input 
                     type="number"
                     step="0.1"
@@ -350,7 +350,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Kekeruhan (NTU) *</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Turbidity (NTU) *</label>
                   <input 
                     type="number"
                     value={sampleTurbidity}
@@ -363,7 +363,7 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Pegawai Pemeriksa *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Testing Officer *</label>
                 <input 
                   type="text"
                   value={sampleTester}
@@ -374,42 +374,42 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
               </div>
 
               <div className="pt-2 flex justify-end gap-3">
-                <button type="button" onClick={() => setShowSampleModal(false)} className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800">Batal</button>
-                <button type="submit" className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-emerald-400 hover:bg-emerald-300 uppercase tracking-wider shadow-lg shadow-emerald-400/20">Simpan Ujian Air</button>
+                <button type="button" onClick={() => setShowSampleModal(false)} className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800">Cancel</button>
+                <button type="submit" className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-emerald-400 hover:bg-emerald-300 uppercase tracking-wider shadow-lg shadow-emerald-400/20">Save Water Test</button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* MODAL: BUANGAN BERJADUAL BARU */}
+      {/* MODAL: NEW SCHEDULED WASTE RECORD */}
       {showWasteModal && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h3 className="text-base font-black text-white flex items-center gap-2">
-                <Activity size={18} className="text-blue-400" /> Catat Buangan Berjadual (e-SWIS)
+                <Activity size={18} className="text-blue-400" /> Log Scheduled Waste (e-SWIS)
               </h3>
               <button onClick={() => setShowWasteModal(false)} className="text-slate-400 hover:text-white text-xs font-bold">✕</button>
             </div>
 
             <form onSubmit={handleAddWaste} className="space-y-4">
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Kod Buangan Berjadual *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Scheduled Waste Code *</label>
                 <select 
                   value={wasteCode}
                   onChange={e => setWasteCode(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-blue-400 font-mono"
                 >
-                  <option value="SW 305">SW 305 (Minyak Pelincir Terpakai / Spent Lubricant)</option>
-                  <option value="SW 306">SW 306 (Minyak Hidraulik Terpakai)</option>
-                  <option value="SW 409">SW 409 (Kain Kekotoran Minyak / Contaminated Rags)</option>
-                  <option value="SW 410">SW 410 (Penapis Minyak Lori Terpakai / Filters)</option>
+                  <option value="SW 305">SW 305 (Spent Lubricant Oil)</option>
+                  <option value="SW 306">SW 306 (Spent Hydraulic Oil)</option>
+                  <option value="SW 409">SW 409 (Contaminated Rags &amp; Gloves)</option>
+                  <option value="SW 410">SW 410 (Spent Truck Oil Filters)</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Keterangan Bahan Sisa *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Waste Material Description *</label>
                 <input 
                   type="text"
                   value={wasteName}
@@ -420,20 +420,20 @@ export const DoeEnvPillarView: React.FC<{ project?: ProjectIdentity }> = ({ proj
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Kuantiti &amp; Bekas Penyimpanan *</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Quantity &amp; Storage Container *</label>
                 <input 
                   type="text"
                   value={wasteQty}
                   onChange={e => setWasteQty(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none focus:border-blue-400 font-mono"
-                  placeholder="cth: 2 Drum (400 Liter)"
+                  placeholder="e.g. 2 Drums (400 Liters)"
                   required
                 />
               </div>
 
               <div className="pt-2 flex justify-end gap-3">
-                <button type="button" onClick={() => setShowWasteModal(false)} className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800">Batal</button>
-                <button type="submit" className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-blue-400 hover:bg-blue-300 uppercase tracking-wider shadow-lg shadow-blue-400/20">Daftar Ke e-SWIS</button>
+                <button type="button" onClick={() => setShowWasteModal(false)} className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800">Cancel</button>
+                <button type="submit" className="px-5 py-2 rounded-xl text-xs font-black text-slate-950 bg-blue-400 hover:bg-blue-300 uppercase tracking-wider shadow-lg shadow-blue-400/20">Register to e-SWIS</button>
               </div>
             </form>
           </div>

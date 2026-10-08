@@ -39,40 +39,40 @@ export const SidebarCommandRail: React.FC<SidebarCommandRailProps> = ({
   const operationalItems = [
     {
       id: 'daily_manpower',
-      label: 'Kehadiran Manpower Harian',
-      sublabel: 'Daily Muster, Kuota & Shift',
+      label: 'Daily Manpower Muster',
+      sublabel: 'Daily Headcount, Trades & Shift',
       icon: Users,
       badge: null,
       badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
     },
     {
       id: 'workers_db',
-      label: 'Pekerja & Kad Hijau CIDB',
-      sublabel: 'Direktori Pekerja & Induksi Tapak',
+      label: 'Workers & CIDB Green Card',
+      sublabel: 'Worker Registry & Site Induction',
       icon: UserCheck,
       badge: badgeCounts.workers,
       badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     },
     {
       id: 'dosh_ops',
-      label: 'Pemeriksaan & PTW Tapak',
-      sublabel: 'OSHA 2022, Tag Perancah 7-Hari & JKKP',
+      label: 'Site Inspections & PTW',
+      sublabel: 'OSHA 2022, 7-Day Scaffolds & PTW',
       icon: HardHat,
       badge: badgeCounts.dosh,
       badgeColor: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
     },
     {
       id: 'doe_env',
-      label: 'Alam Sekitar & Sisa Berjadual',
-      sublabel: 'Ujian Silt Trap TSS, e-SWIS 180 Hari',
+      label: 'DOE Environment & Waste',
+      sublabel: 'Silt Trap TSS, e-SWIS 180 Days',
       icon: Droplets,
       badge: badgeCounts.doe,
       badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     },
     {
       id: 'health_welfare',
-      label: 'Kesihatan, Vektor & CLQ',
-      sublabel: 'Fogging Aedes 14-Hari, CLQ Akta 446',
+      label: 'Health, Vector & CLQ',
+      sublabel: 'Aedes Fogging, Act 446 Quarters',
       icon: HeartHandshake,
       badge: badgeCounts.health,
       badgeColor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
@@ -84,31 +84,31 @@ export const SidebarCommandRail: React.FC<SidebarCommandRailProps> = ({
     {
       id: 'overview',
       label: 'Executive Command Matrix',
-      sublabel: 'Core Watchdog & Site Twin',
+      sublabel: 'Core Watchdog & Site Digital Twin',
       icon: Activity,
       badge: null,
       badgeColor: '',
     },
     {
       id: 'cdm_studio',
-      label: 'Tadbir Urus CDM 2024',
-      sublabel: 'Borang JKKP 103 & Duty Holders',
+      label: 'CDM 2024 Governance Studio',
+      sublabel: 'DOSH Form 103 & Duty Holders',
       icon: BookOpen,
       badge: badgeCounts.cdm,
       badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     },
     {
       id: 'corporate_subcon',
-      label: 'Saringan Subkontraktor',
-      sublabel: 'Gred CIDB, Insurans CAR & AI Copilot',
+      label: 'Subcontractor Vetting',
+      sublabel: 'CIDB Grades, CAR Insurance & Copilot',
       icon: Building2,
       badge: badgeCounts.corporate,
       badgeColor: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
     },
     {
       id: 'reports_analytics',
-      label: 'Laporan Bulanan SHO & Lejar',
-      sublabel: 'Laporan Seksyen 29, Safe Man-Hours',
+      label: 'SHO Monthly Reports & Logs',
+      sublabel: 'Section 29 Report, Safe Man-Hours',
       icon: FileText,
       badge: null,
       badgeColor: '',
@@ -141,11 +141,11 @@ export const SidebarCommandRail: React.FC<SidebarCommandRailProps> = ({
       {/* Navigation Pillar Rail List */}
       <nav className="flex-1 p-3.5 space-y-4 overflow-y-auto custom-scrollbar">
         
-        {/* Section 1: Operasi Harian Tapak (Daily Field Ops) */}
+        {/* Section 1: Daily Field Operations */}
         <div className="space-y-1">
           <div className="px-3 py-1 flex items-center justify-between">
             <span className="text-[9px] font-black uppercase tracking-widest text-cyan-400">
-              Operasi Tapak Harian
+              Daily Field Operations
             </span>
             <span className="text-[9px] font-mono text-slate-500">Field Ops</span>
           </div>
@@ -195,11 +195,11 @@ export const SidebarCommandRail: React.FC<SidebarCommandRailProps> = ({
           })}
         </div>
 
-        {/* Section 2: Tadbir Urus & Laporan Berkanun */}
+        {/* Section 2: Statutory Governance & Reports */}
         <div className="space-y-1 pt-2 border-t border-slate-800/60">
           <div className="px-3 py-1 flex items-center justify-between">
             <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">
-              Tadbir Urus &amp; Laporan
+              Statutory Governance &amp; Reports
             </span>
             <span className="text-[9px] font-mono text-slate-500">Statutory</span>
           </div>
