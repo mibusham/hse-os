@@ -1,20 +1,22 @@
 import React from 'react';
 import { 
-  Bell, ChevronRight, Sparkles, CheckCircle2 
+  Bell, ChevronRight, Sparkles, CheckCircle2, X
 } from 'lucide-react';
 import type { AICoreAdvisory } from '../../types/core';
 
 interface ActionRadarPaneProps {
   advisories: AICoreAdvisory[];
   onActionClick: (advisory: AICoreAdvisory) => void;
+  onClose?: () => void;
 }
 
 export const ActionRadarPane: React.FC<ActionRadarPaneProps> = ({
   advisories,
   onActionClick,
+  onClose,
 }) => {
   return (
-    <aside className="w-88 bg-slate-900 border-l border-slate-800 flex flex-col shrink-0 select-none">
+    <aside className="w-88 max-w-[90vw] h-full bg-slate-900 border-l border-slate-800 flex flex-col shrink-0 select-none">
       
       {/* Pane Header */}
       <div className="p-4 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between">
@@ -32,9 +34,21 @@ export const ActionRadarPane: React.FC<ActionRadarPaneProps> = ({
           </div>
         </div>
 
-        <span className="text-[10px] font-mono font-bold bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded-full border border-rose-500/20">
-          {advisories.length} Pending
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-mono font-bold bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded-full border border-rose-500/20">
+            {advisories.length} Pending
+          </span>
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1 text-slate-400 hover:text-white rounded-lg bg-slate-800"
+              title="Close Panel"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Advisories Feed List */}

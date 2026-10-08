@@ -7,6 +7,7 @@ import SidebarCommandRail from './components/layout/SidebarCommandRail';
 import type { NavPillarId } from './components/layout/SidebarCommandRail';
 import CoreBrainHeader from './components/layout/CoreBrainHeader';
 import ActionRadarPane from './components/layout/ActionRadarPane';
+import { MobileBottomNav } from './components/layout/MobileBottomNav';
 import ExecutiveMatrixView from './components/views/ExecutiveMatrixView';
 import DailyManpowerView from './components/views/DailyManpowerView';
 import WorkerDirectoryView from './components/views/WorkerDirectoryView';
@@ -22,6 +23,8 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activePillar, setActivePillar] = useState<NavPillarId>('overview');
   const [, setSelectedModule] = useState<string | null>(null);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
+  const [isRadarSheetOpen, setIsRadarSheetOpen] = useState<boolean>(false);
   const [coreAudit, setCoreAudit] = useState<{
     advisories: any[];
     complianceScore: number;
@@ -116,22 +119,53 @@ export const App: React.FC = () => {
   return (
     <div className="h-screen bg-slate-950 text-slate-100 flex overflow-hidden font-sans selection:bg-emerald-500 selection:text-black">
       
-      {/* 1. Zone Left: The Sidebar Command Rail */}
-      <SidebarCommandRail
-        activePillar={activePillar}
-        onSelectPillar={(pillarId) => {
-          setActivePillar(pillarId);
-          setSelectedModule(null);
-        }}
-        badgeCounts={{
-          dosh: advisories.filter(a => a.pillar === 'DOSH').length,
-          cdm: advisories.filter(a => a.pillar === 'CDM').length,
-          doe: advisories.filter(a => a.pillar === 'DOE').length,
-          health: advisories.filter(a => a.pillar === 'HEALTH').length,
-          corporate: advisories.filter(a => a.pillar === 'CORPORATE').length,
-          workers: advisories.filter(a => a.actionRoute === 'workers_db').length,
-        }}
-      />
+      {/* 1. Zone Left: Desktop Command Rail */}
+      <div className="hidden lg:flex shrink-0 w-72 xl:w-80 h-full border-r border-slate-800">
+        <SidebarCommandRail
+          activePillar={activePillar}
+          onSelectPillar={(pillarId) => {
+            setActivePillar(pillarId);
+            setSelectedModule(null);
+          }}
+          badgeCounts={{
+            dosh: advisories.filter(a => a.pillar === 'DOSH').length,
+            cdm: advisories.filter(a => a.pillar === 'CDM').length,
+            doe: advisories.filter(a => a.pillar === 'DOE').length,
+            health: advisories.filter(a => a.pillar === 'HEALTH').length,
+            corporate: advisories.filter(a => a.pillar === 'CORPORATE').length,
+            workers: advisories.filter(a => a.actionRoute === 'workers_db').length,
+          }}
+        />
+      </div>
+
+      {/* Mobile Off-Canvas Drawer (Left) */}
+      {isMobileDrawerOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div 
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsMobileDrawerOpen(false)}
+          />
+          <div className="relative w-80 max-w-[85vw] h-full bg-slate-900 border-r border-slate-800 shadow-2xl z-10 flex flex-col animate-in slide-in-from-left duration-200">
+            <SidebarCommandRail
+              activePillar={activePillar}
+              onSelectPillar={(pillarId) => {
+                setActivePillar(pillarId);
+                setSelectedModule(null);
+                setIsMobileDrawerOpen(false);
+              }}
+              onClose={() => setIsMobileDrawerOpen(false)}
+              badgeCounts={{
+                dosh: advisories.filter(a => a.pillar === 'DOSH').length,
+                cdm: advisories.filter(a => a.pillar === 'CDM').length,
+                doe: advisories.filter(a => a.pillar === 'DOE').length,
+                health: advisories.filter(a => a.pillar === 'HEALTH').length,
+                corporate: advisories.filter(a => a.pillar === 'CORPORATE').length,
+                workers: advisories.filter(a => a.actionRoute === 'workers_db').length,
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* 2. Central Zone: Main Viewport (Header + Scrollable Workspace) */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -140,13 +174,15 @@ export const App: React.FC = () => {
         <CoreBrainHeader
           project={project}
           onReconfigure={() => setProject(null)}
+          onOpenMobileMenu={() => setIsMobileDrawerOpen(true)}
+          onOpenRadar={() => setIsRadarSheetOpen(true)}
           activeHazardsCount={advisories.length}
           complianceScore={coreAudit.complianceScore}
           statusLevel={coreAudit.statusLevel}
         />
 
         {/* Scrollable Central Working Canvas */}
-        <main className="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-8 bg-slate-950/80">
+        <main className="flex-1 overflow-y-auto custom-scrollbar p-3.5 sm:p-6 lg:p-8 pb-28 lg:pb-8 bg-slate-950/80">
           {activePillar === 'overview' && (
             <ExecutiveMatrixView
               project={project}
@@ -192,10 +228,44 @@ export const App: React.FC = () => {
 
       </div>
 
-      {/* 3. Zone Right: The Action Radar & Live Audit Pane */}
-      <ActionRadarPane
-        advisories={advisories}
-        onActionClick={handleActionClick}
+      {/* 3. Zone Right: Action Radar & Live Audit Pane */}
+      {/* Desktop Persistent Rail (>= 2xl) */}
+      <div className="hidden 2xl:flex shrink-0 w-88 h-full">
+        <ActionRadarPane
+          advisories={advisories}
+          onActionClick={handleActionClick}
+        />
+      </div>
+
+      {/* Mobile & Tablet Slide-out Drawer (< 2xl) */}
+      {isRadarSheetOpen && (
+        <div className="2xl:hidden fixed inset-0 z-50 flex justify-end">
+          <div 
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsRadarSheetOpen(false)}
+          />
+          <div className="relative w-88 max-w-[90vw] h-full bg-slate-900 border-l border-slate-800 shadow-2xl z-10 flex flex-col animate-in slide-in-from-right duration-200">
+            <ActionRadarPane
+              advisories={advisories}
+              onActionClick={(adv) => {
+                handleActionClick(adv);
+                setIsRadarSheetOpen(false);
+              }}
+              onClose={() => setIsRadarSheetOpen(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 4. Touch Navigation Bar (Mobile / Tablet Only) */}
+      <MobileBottomNav
+        activePillar={activePillar}
+        onSelectPillar={(pillarId) => {
+          setActivePillar(pillarId);
+          setSelectedModule(null);
+        }}
+        pendingAlertsCount={advisories.length}
+        onOpenRadar={() => setIsRadarSheetOpen(true)}
       />
 
     </div>

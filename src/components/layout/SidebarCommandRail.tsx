@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   ShieldCheck, HardHat, BookOpen, Droplets, 
   HeartHandshake, Building2, FileText, Activity,
-  Users, UserCheck
+  Users, UserCheck, X
 } from 'lucide-react';
 
 export type NavPillarId = 
@@ -19,6 +19,7 @@ export type NavPillarId =
 interface SidebarCommandRailProps {
   activePillar: NavPillarId;
   onSelectPillar: (id: NavPillarId) => void;
+  onClose?: () => void;
   badgeCounts?: {
     dosh?: number;
     cdm?: number;
@@ -33,6 +34,7 @@ interface SidebarCommandRailProps {
 export const SidebarCommandRail: React.FC<SidebarCommandRailProps> = ({
   activePillar,
   onSelectPillar,
+  onClose,
   badgeCounts = { dosh: 2, cdm: 1, doe: 1, health: 0, corporate: 0 }
 }) => {
   // Operational Items (Daily Field Ops from ytchse)
@@ -119,8 +121,8 @@ export const SidebarCommandRail: React.FC<SidebarCommandRailProps> = ({
     <aside className="w-80 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 select-none">
       
       {/* Brand & Project Identity Block */}
-      <div className="p-5 border-b border-slate-800/80 bg-slate-900/90">
-        <div className="flex items-center gap-3">
+      <div className="p-5 border-b border-slate-800/80 bg-slate-900/90 flex items-center justify-between">
+        <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 shrink-0">
             <ShieldCheck size={22} />
           </div>
@@ -136,6 +138,17 @@ export const SidebarCommandRail: React.FC<SidebarCommandRailProps> = ({
             </p>
           </div>
         </div>
+
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1.5 text-slate-400 hover:text-white rounded-xl bg-slate-800 shrink-0 ml-2"
+            title="Close Drawer"
+          >
+            <X size={18} />
+          </button>
+        )}
       </div>
 
       {/* Navigation Pillar Rail List */}
