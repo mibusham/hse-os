@@ -7,6 +7,7 @@ import {
 import type { ProjectIdentity, SubcontractorRecord } from '../../types/core';
 import { ProjectService } from '../../services/projectService';
 import { SitePenaltyView } from './operational/SitePenaltyView';
+import { StaffSubconView } from './operational/StaffSubconView';
 
 export interface SubconScopeOption {
   id: string;
@@ -56,7 +57,7 @@ const DEFAULT_SCOPES: SubconScopeOption[] = [
 ];
 
 export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> = ({ project }) => {
-  const [subconTab, setSubconTab] = useState<'DIRECTORY' | 'PENALTIES'>('DIRECTORY');
+  const [subconTab, setSubconTab] = useState<'DIRECTORY' | 'STAFF_COMPETENT' | 'PENALTIES'>('DIRECTORY');
 
   const [subconList, setSubconList] = useState<SubcontractorRecord[]>(() => {
     return ProjectService.loadData<SubcontractorRecord[]>('subcontractors_list', []);
@@ -376,6 +377,19 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
 
         <button
           type="button"
+          onClick={() => setSubconTab('STAFF_COMPETENT')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            subconTab === 'STAFF_COMPETENT'
+              ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300 ring-1 ring-emerald-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Users size={14} />
+          <span>Subcon Profiles &amp; Competent Staff</span>
+        </button>
+
+        <button
+          type="button"
           onClick={() => setSubconTab('PENALTIES')}
           className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
             subconTab === 'PENALTIES'
@@ -388,6 +402,7 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
         </button>
       </div>
 
+      {subconTab === 'STAFF_COMPETENT' && <StaffSubconView project={project} />}
       {subconTab === 'PENALTIES' && <SitePenaltyView project={project} />}
 
       {subconTab === 'DIRECTORY' && (

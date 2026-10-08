@@ -11,9 +11,10 @@ import { DailySafetyWalkView } from './operational/DailySafetyWalkView';
 import { MachineryHeavyPlantView } from './operational/MachineryHeavyPlantView';
 import { LiftingGearView } from './operational/LiftingGearView';
 import { HandPowerToolsView } from './operational/HandPowerToolsView';
+import { LiftingPlanView } from './operational/LiftingPlanView';
 
 export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ project }) => {
-  const [activeTab, setActiveTab] = useState<'PTW' | 'DAILY_WALK' | 'MACHINERY' | 'LIFTING_GEAR' | 'HAND_TOOLS' | 'INSPECTIONS' | 'MANHOURS'>('PTW');
+  const [activeTab, setActiveTab] = useState<'PTW' | 'DAILY_WALK' | 'MACHINERY' | 'LIFTING_GEAR' | 'LIFTING_PLAN' | 'HAND_TOOLS' | 'INSPECTIONS' | 'MANHOURS'>('PTW');
 
 
   // 1. PTW State & Persistence
@@ -214,6 +215,7 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
           { id: 'DAILY_WALK', label: 'Daily Safety Walk & Findings', count: null, icon: AlertTriangle },
           { id: 'MACHINERY', label: 'Plant & Heavy Machinery (PMA)', count: null, icon: Tractor },
           { id: 'LIFTING_GEAR', label: 'Lifting Gear & Color Tags', count: null, icon: Anchor },
+          { id: 'LIFTING_PLAN', label: 'Lifting Plan & Load Calculator', count: null, icon: Tractor },
           { id: 'HAND_TOOLS', label: 'Hand Power Tools', count: null, icon: Wrench },
           { id: 'INSPECTIONS', label: '7-Day Scaffold Inspection', count: inspectionList.length, icon: Layers },
           { id: 'MANHOURS', label: 'Safe Man-Hours (A×B×C=D)', count: manHoursLogs.length, icon: Clock },
@@ -617,6 +619,9 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
 
       {/* TAB 6: LIFTING GEAR */}
       {activeTab === 'LIFTING_GEAR' && <LiftingGearView project={project} />}
+
+      {/* TAB: LIFTING PLAN & CRANE CALCULATOR */}
+      {activeTab === 'LIFTING_PLAN' && <LiftingPlanView project={project} />}
 
       {/* TAB 7: HAND POWER TOOLS */}
       {activeTab === 'HAND_TOOLS' && <HandPowerToolsView project={project} />}

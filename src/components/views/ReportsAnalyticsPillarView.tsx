@@ -5,9 +5,11 @@ import {
 import type { ProjectIdentity, PTWRecord, InspectionRecord, SubcontractorRecord, ManHoursLog } from '../../types/core';
 import { ProjectService } from '../../services/projectService';
 import { ToolboxGalleryView } from './operational/ToolboxGalleryView';
+import { HseDocumentsView } from './operational/HseDocumentsView';
+import { MonthlyReportGeneratorView } from './operational/MonthlyReportGeneratorView';
 
 export const ReportsAnalyticsPillarView: React.FC<{ project: ProjectIdentity }> = ({ project }) => {
-  const [activeReportTab, setActiveReportTab] = useState<'REPORTS' | 'TOOLBOX_GALLERY'>('REPORTS');
+  const [activeReportTab, setActiveReportTab] = useState<'REPORTS' | 'FORMAL_GENERATOR' | 'DOCUMENTS' | 'TOOLBOX_GALLERY'>('REPORTS');
   const [selectedMonth, setSelectedMonth] = useState('October 2026');
   const [showPrintModal, setShowPrintModal] = useState(false);
 
@@ -60,11 +62,11 @@ export const ReportsAnalyticsPillarView: React.FC<{ project: ProjectIdentity }> 
       </div>
 
       {/* Sub-Tabs Switcher */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
         <button
           type="button"
           onClick={() => setActiveReportTab('REPORTS')}
-          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border whitespace-nowrap ${
             activeReportTab === 'REPORTS'
               ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300 ring-1 ring-emerald-500/20'
               : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -76,8 +78,34 @@ export const ReportsAnalyticsPillarView: React.FC<{ project: ProjectIdentity }> 
 
         <button
           type="button"
+          onClick={() => setActiveReportTab('FORMAL_GENERATOR')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border whitespace-nowrap ${
+            activeReportTab === 'FORMAL_GENERATOR'
+              ? 'bg-blue-500/10 border-blue-500/40 text-blue-300 ring-1 ring-blue-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Printer size={14} />
+          <span>Monthly Report Generator (Full Endorsement)</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveReportTab('DOCUMENTS')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border whitespace-nowrap ${
+            activeReportTab === 'DOCUMENTS'
+              ? 'bg-purple-500/10 border-purple-500/40 text-purple-300 ring-1 ring-purple-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <FileText size={14} />
+          <span>HSE Documents &amp; Acts Repository</span>
+        </button>
+
+        <button
+          type="button"
           onClick={() => setActiveReportTab('TOOLBOX_GALLERY')}
-          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border whitespace-nowrap ${
             activeReportTab === 'TOOLBOX_GALLERY'
               ? 'bg-teal-500/10 border-teal-500/40 text-teal-300 ring-1 ring-teal-500/20'
               : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -88,6 +116,8 @@ export const ReportsAnalyticsPillarView: React.FC<{ project: ProjectIdentity }> 
         </button>
       </div>
 
+      {activeReportTab === 'FORMAL_GENERATOR' && <MonthlyReportGeneratorView project={project} />}
+      {activeReportTab === 'DOCUMENTS' && <HseDocumentsView project={project} />}
       {activeReportTab === 'TOOLBOX_GALLERY' && <ToolboxGalleryView project={project} />}
 
       {activeReportTab === 'REPORTS' && (
