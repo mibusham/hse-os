@@ -8,12 +8,16 @@ interface ExecutiveMatrixViewProps {
   project: ProjectIdentity;
   modules: HSEModuleConfig[];
   onSelectModule: (moduleId: string) => void;
+  complianceScore?: number;
+  advisoriesCount?: number;
 }
 
 export const ExecutiveMatrixView: React.FC<ExecutiveMatrixViewProps> = ({
   project,
   modules,
   onSelectModule,
+  complianceScore = 100,
+  advisoriesCount = 0,
 }) => {
   return (
     <div className="space-y-6">
@@ -64,8 +68,14 @@ export const ExecutiveMatrixView: React.FC<ExecutiveMatrixViewProps> = ({
           <div className="flex items-center gap-3 sm:gap-4 shrink-0 w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0">
             <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 min-w-[130px] flex-1 lg:flex-none">
               <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Statutory Score</span>
-              <p className="text-2xl font-black text-emerald-400 mt-1">100%</p>
-              <span className="text-[9px] text-emerald-500 font-bold">Compliant Day 1</span>
+              <p className={`text-2xl font-black mt-1 font-mono ${
+                complianceScore >= 90 ? 'text-emerald-400' : complianceScore >= 75 ? 'text-amber-400' : 'text-rose-400'
+              }`}>{complianceScore}%</p>
+              <span className={`text-[9px] font-bold ${
+                complianceScore >= 90 ? 'text-emerald-500' : complianceScore >= 75 ? 'text-amber-500' : 'text-rose-500'
+              }`}>
+                {advisoriesCount === 0 ? '100% Compliant' : `${advisoriesCount} Risk Flagged`}
+              </span>
             </div>
             <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 min-w-[130px] flex-1 lg:flex-none">
               <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Safe Man-Hours</span>

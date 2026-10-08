@@ -64,7 +64,20 @@ export const App: React.FC = () => {
   }
 
   const modules = HSECoreEngine.synthesizeModules(project);
-  const advisories = HSECoreEngine.generateDayOneAdvisories(project);
+
+  // Real-Time Autonomous Site Watchdog Core Audit State
+  const [coreAudit, setCoreAudit] = useState(() => HSECoreEngine.runAutonomousAudit(project));
+
+  // Continuous Heartbeat: Scans site operational datasets every 2.5 seconds
+  useEffect(() => {
+    if (!project) return;
+    const interval = setInterval(() => {
+      setCoreAudit(HSECoreEngine.runAutonomousAudit(project));
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [project, activePillar]);
+
+  const advisories = coreAudit.advisories;
 
   const handleSelectModule = (modId: string) => {
     setSelectedModule(modId);
@@ -112,6 +125,8 @@ export const App: React.FC = () => {
           project={project}
           onReconfigure={() => setProject(null)}
           activeHazardsCount={advisories.length}
+          complianceScore={coreAudit.complianceScore}
+          statusLevel={coreAudit.statusLevel}
         />
 
         {/* Scrollable Central Working Canvas */}
@@ -121,6 +136,8 @@ export const App: React.FC = () => {
               project={project}
               modules={modules}
               onSelectModule={handleSelectModule}
+              complianceScore={coreAudit.complianceScore}
+              advisoriesCount={advisories.length}
             />
           )}
 
