@@ -121,4 +121,30 @@ Semua fungsi statutori kini telah dihidupkan sepenuhnya (100% Operational) dan d
   - **Auto-Injection & Auto-Select 1-Klik:** Pengguna hanya klik butang `+ Sahkan & Cipta Skop Ini`, dan Core akan serta-merta mendaftar skop baharu tersebut ke dalam senarai dropdown, memilihnya secara automatik, dan menyelaraskan gred CIDB yang disyorkan.
   - Senarai skop baharu disimpan secara kekal dalam profil tapak projek.
 
+---
+
+## 5. Fasa 1 Penggabungan Lapangan ytchse ke HSE OS (8 Oktober 2026)
+Selaras dengan perbincangan strategik bersama pengguna, modul operasi praktikal harian tapak dibawa masuk secara rasmi ke dalam HSE OS tanpa mengganggu kod atau data asal di `ytchse.site`:
+
+1. **Daily Manpower Muster Tracker (`DailyManpowerView.tsx`)**:
+   - Pemilihan tarikh & syif (Siang / Malam) bersama log cuaca pagi & petang.
+   - Pecahan 12 perdagangan tapak (*trades*) dengan kawalan pantas (+ / - / stepper +5 / +10).
+   - Butang "Salin Semalam" untuk memudahkan pengisian harian tanpa menaip semula.
+   - Lejar sejarah kehadiran tapak yang disimpan secara automatik ke Google Cloud Firestore.
+   - Pautan langsung kepada pengiraan Jam Bekerja Selamat (*Safe Man-Hours*) projek.
+
+2. **Pangkalan Data Pekerja & Kad Hijau CIDB (`WorkerDirectoryView.tsx`)**:
+   - Direktori lengkap pekerja tapak kontraktor utama & subkontraktor.
+   - Semakan statutori Kad Hijau CIDB (Sah / Bakal Luput <30 hari / Tamat Tempoh).
+   - Log kelulusan Induksi Keselamatan Tapak (*Safety Induction*) & butiran waris kecemasan (Next of Kin).
+   - Penapis carian mengikut Subkon, Trade, Warganegara, dan Status Kad Hijau.
+   - Fungsi eksport senarai pekerja ke CSV untuk pelaporan pengurusan tapak.
+
+3. **Struktur Navigasi Dua Lapisan (*Two-Tier Navigation Rail*)**:
+   - `SidebarCommandRail.tsx` dibahagikan kepada dua bahagian jelas:
+     - **Operasi Tapak Harian (Field Ops)**: Manpower Harian, Direktori Pekerja & Kad Hijau, Pemeriksaan & PTW, Alam Sekitar, Kesihatan & Vektor.
+     - **Tadbir Urus & Laporan (Statutory)**: Executive Matrix, CDM 2024 (JKKP 103), Saringan Subkontraktor, Laporan Bulanan SHO.
+   - Sambungan pengawasan Core Engine: Core Watchdog secara automatik menyemak rekod pekerja dan menjana amaran statutori sekiranya dikesan Kad Hijau tamat tempoh atau pekerja belum menghadiri induksi.
+
+
 
