@@ -122,7 +122,7 @@ export interface ManHoursLog {
 export interface WorkerRecord {
   id: string;
   fullName: string;
-  documentType: 'IC' | 'PASSPORT';
+  documentType: 'IC' | 'PASSPORT' | 'UNHCR' | 'NRIC' | 'Other';
   documentNo: string;
   nationality: string;
   trade: string;
@@ -131,12 +131,23 @@ export interface WorkerRecord {
   greenCardExpiry: string;
   inductionDate: string;
   hasPassedInduction: boolean;
+  permitNumber?: string;
+  permitExpiry?: string;
+  passportExpiry?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  maritalStatus?: string;
+  workerNumber?: string;
+  companyContact?: string;
+  personInCharge?: string;
   bloodType?: string;
   emergencyContactName?: string;
   emergencyContactPhone?: string;
   photoUrl?: string;
+  photo?: string | null;
   status: 'ACTIVE' | 'INACTIVE' | 'BARRED';
   notes?: string;
+  receivedPass?: boolean;
 }
 
 export interface TradeItem {
@@ -158,4 +169,126 @@ export interface DailyManpowerEntry {
   notes?: string;
   createdAt: string;
 }
+
+// Operational Models from ytchse
+export interface MachineryItem {
+  id: string;
+  name: string; // e.g. Excavator, Mobile Crane, Tower Crane, Roller
+  registrationNo: string;
+  brandModel?: string;
+  capacity?: string;
+  subcontractor?: string;
+  photoUrl?: string;
+  pmaNo?: string;
+  pmaCertUrl?: string;
+  dateMobilize: string;
+  dateDemobilize?: string | null;
+  pmaExpiry?: string;
+  operatorName?: string;
+  operatorPhone?: string;
+  operatorCidb?: string;
+  operatorJkkp?: string;
+  operatorIc?: string;
+  status?: 'ACTIVE' | 'MAINTENANCE' | 'BREAKDOWN';
+  zone?: string;
+  inspections?: any[];
+}
+
+export interface LiftingGearRecord {
+  id: string;
+  gearType: string;
+  serialNo?: string;
+  swl?: string;
+  location: string;
+  company: string;
+  dateInspection: string;
+  colorCode?: string;
+  status: 'FIT' | 'DEFECTIVE';
+  inspectorName?: string;
+  photoUrl?: string;
+  certificateUrl?: string;
+  comments?: string;
+}
+
+export interface HandPowerToolRecord {
+  id: string;
+  toolType: string;
+  serialNo: string;
+  subcontractor: string;
+  voltage: string;
+  colorCode: string;
+  status: 'PASS' | 'DEFECTIVE';
+  inspectionDate: string;
+  inspectorName: string;
+  notes?: string;
+}
+
+export interface FireExtinguisherRecord {
+  id: string;
+  tagNo: string;
+  cylinderType: 'ABC Powder' | 'CO2' | 'Water' | 'Foam';
+  capacity: string;
+  location: string;
+  bombaExpiry: string;
+  gaugeStatus: 'NORMAL' | 'LOW' | 'OVERCHARGED';
+  physicalStatus: 'GOOD' | 'DAMAGED' | 'PIN_MISSING';
+  lastInspectionDate: string;
+  inspectorName: string;
+}
+
+export interface SafetyFindingRecord {
+  id: string;
+  date: string;
+  location: string;
+  subcontractor: string;
+  description: string;
+  category: 'Unsafe Act' | 'Unsafe Condition' | 'Environmental';
+  severity: 'Low' | 'Medium' | 'High' | 'Critical';
+  photoUrl?: string;
+  rectifiedPhotoUrl?: string;
+  status: 'OPEN' | 'RECTIFIED' | 'CLOSED';
+  actionTaken?: string;
+  aiMitigation?: string;
+  reportedBy: string;
+}
+
+export interface SitePenaltyRecord {
+  id: string;
+  date: string;
+  photoUrl?: string;
+  subcon: string;
+  amount: number;
+  demeritPoints: number;
+  description: string;
+  issuedBy: string;
+  status: 'ISSUED' | 'PAID' | 'DISPUTED';
+}
+
+export interface ToolboxRecord {
+  id: string;
+  type: 'Toolbox Talk' | 'Site Training' | 'Special Briefing';
+  date: string;
+  photoUrl?: string;
+  topic: string;
+  presenter: string;
+  attendeesCount: number;
+  remarks?: string;
+}
+
+export interface IncidentRecord {
+  id: string;
+  referenceNo: string;
+  date: string;
+  time: string;
+  location: string;
+  subcontractor: string;
+  incidentType: 'Near Miss' | 'First Aid' | 'Medical Treatment' | 'Lost Time Injury (LTI)' | 'Dangerous Occurrence' | 'Fatality';
+  injuredPersonName?: string;
+  injuryNature?: string;
+  briefDescription: string;
+  immediateAction: string;
+  doshReportable: boolean;
+  status: 'INVESTIGATING' | 'CLOSED';
+}
+
 

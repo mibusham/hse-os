@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { 
   Building2, CheckCircle2, 
   Plus, Trash2, Users,
-  Bot, Sparkles, Send, X, Check, ShieldCheck
+  Bot, Sparkles, Send, X, Check, ShieldCheck, Receipt
 } from 'lucide-react';
 import type { ProjectIdentity, SubcontractorRecord } from '../../types/core';
 import { ProjectService } from '../../services/projectService';
+import { SitePenaltyView } from './operational/SitePenaltyView';
 
 export interface SubconScopeOption {
   id: string;
@@ -55,6 +56,8 @@ const DEFAULT_SCOPES: SubconScopeOption[] = [
 ];
 
 export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> = ({ project }) => {
+  const [subconTab, setSubconTab] = useState<'DIRECTORY' | 'PENALTIES'>('DIRECTORY');
+
   const [subconList, setSubconList] = useState<SubcontractorRecord[]>(() => {
     return ProjectService.loadData<SubcontractorRecord[]>('subcontractors_list', []);
   });
@@ -353,8 +356,44 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
         </div>
       </div>
 
-      {/* KPI Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* Sub-Tabs Switcher */}
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+        <button
+          type="button"
+          onClick={() => setSubconTab('DIRECTORY')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            subconTab === 'DIRECTORY'
+              ? 'bg-purple-500/10 border-purple-500/40 text-purple-300 ring-1 ring-purple-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Building2 size={14} />
+          <span>Subcontractor Directory &amp; CAR Insurance</span>
+          <span className="text-[10px] px-2 py-0.2 rounded-full font-mono bg-slate-800 text-slate-300">
+            {subconList.length}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSubconTab('PENALTIES')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            subconTab === 'PENALTIES'
+              ? 'bg-rose-500/10 border-rose-500/40 text-rose-300 ring-1 ring-rose-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Receipt size={14} />
+          <span>Site Penalties &amp; Demerit Compound Slips</span>
+        </button>
+      </div>
+
+      {subconTab === 'PENALTIES' && <SitePenaltyView project={project} />}
+
+      {subconTab === 'DIRECTORY' && (
+        <>
+          {/* KPI Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Total Registered Subcontractors</span>
           <p className="text-3xl font-black text-white mt-1 font-mono">{subconList.length}</p>
@@ -456,6 +495,8 @@ export const CorporateSubconPillarView: React.FC<{ project?: ProjectIdentity }> 
           ))
         )}
       </div>
+      </>
+      )}
 
       {/* MODAL: REGISTER NEW SUBCON WITH IN-CONTEXT CORE AI TRADE COPILOT */}
       {showAddModal && (

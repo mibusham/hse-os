@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
   HeartHandshake, Plus, 
-  Trash2, Wind
+  Trash2, Wind, HeartPulse, Flame
 } from 'lucide-react';
 import type { ProjectIdentity } from '../../types/core';
 import { ProjectService } from '../../services/projectService';
+import { IncidentFirstAidView } from './operational/IncidentFirstAidView';
+import { FireEmergencyView } from './operational/FireEmergencyView';
 
 interface FoggingRecord {
   id: string;
@@ -17,6 +19,8 @@ interface FoggingRecord {
 }
 
 export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = ({ project }) => {
+  const [healthTab, setHealthTab] = useState<'HEALTH_CLQ' | 'INCIDENTS_FIRSTAID' | 'FIRE_EMERGENCY'>('HEALTH_CLQ');
+
   // Fogging State & Persistence
   const defaultFogging: FoggingRecord[] = [
     {
@@ -124,7 +128,54 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Sub-Tabs Navigation */}
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
+        <button
+          type="button"
+          onClick={() => setHealthTab('HEALTH_CLQ')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            healthTab === 'HEALTH_CLQ'
+              ? 'bg-blue-500/10 border-blue-500/40 text-blue-300 ring-1 ring-blue-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <HeartHandshake size={14} />
+          <span>Worker Welfare &amp; Vector Control</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setHealthTab('INCIDENTS_FIRSTAID')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            healthTab === 'INCIDENTS_FIRSTAID'
+              ? 'bg-rose-500/10 border-rose-500/40 text-rose-300 ring-1 ring-rose-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <HeartPulse size={14} />
+          <span>Incident &amp; First Aid Register</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setHealthTab('FIRE_EMERGENCY')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            healthTab === 'FIRE_EMERGENCY'
+              ? 'bg-orange-500/10 border-orange-500/40 text-orange-300 ring-1 ring-orange-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Flame size={14} />
+          <span>Fire Protection &amp; Emergency</span>
+        </button>
+      </div>
+
+      {healthTab === 'INCIDENTS_FIRSTAID' && <IncidentFirstAidView project={project} />}
+      {healthTab === 'FIRE_EMERGENCY' && <FireEmergencyView project={project} />}
+
+      {healthTab === 'HEALTH_CLQ' && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Vector Control / Fogging Card */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
           <div className="flex items-center justify-between">
@@ -257,6 +308,8 @@ export const HealthWelfarePillarView: React.FC<{ project?: ProjectIdentity }> = 
           ))}
         </div>
       </div>
+      </>
+      )}
 
       {/* MODAL: RECORD NEW FOGGING CYCLE */}
       {showFoggingModal && (

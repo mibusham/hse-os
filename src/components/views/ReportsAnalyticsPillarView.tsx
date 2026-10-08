@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { 
-  FileText, Printer, ShieldCheck
+  FileText, Printer, ShieldCheck, Users
 } from 'lucide-react';
 import type { ProjectIdentity, PTWRecord, InspectionRecord, SubcontractorRecord, ManHoursLog } from '../../types/core';
 import { ProjectService } from '../../services/projectService';
+import { ToolboxGalleryView } from './operational/ToolboxGalleryView';
 
 export const ReportsAnalyticsPillarView: React.FC<{ project: ProjectIdentity }> = ({ project }) => {
+  const [activeReportTab, setActiveReportTab] = useState<'REPORTS' | 'TOOLBOX_GALLERY'>('REPORTS');
   const [selectedMonth, setSelectedMonth] = useState('October 2026');
   const [showPrintModal, setShowPrintModal] = useState(false);
 
@@ -57,8 +59,41 @@ export const ReportsAnalyticsPillarView: React.FC<{ project: ProjectIdentity }> 
         </div>
       </div>
 
-      {/* Report Summary Card with LIVE Data */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5 shadow-sm">
+      {/* Sub-Tabs Switcher */}
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+        <button
+          type="button"
+          onClick={() => setActiveReportTab('REPORTS')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            activeReportTab === 'REPORTS'
+              ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300 ring-1 ring-emerald-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <FileText size={14} />
+          <span>Statutory Monthly Reports &amp; Zero LTI</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveReportTab('TOOLBOX_GALLERY')}
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
+            activeReportTab === 'TOOLBOX_GALLERY'
+              ? 'bg-teal-500/10 border-teal-500/40 text-teal-300 ring-1 ring-teal-500/20'
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Users size={14} />
+          <span>Toolbox Meeting &amp; Training Gallery</span>
+        </button>
+      </div>
+
+      {activeReportTab === 'TOOLBOX_GALLERY' && <ToolboxGalleryView project={project} />}
+
+      {activeReportTab === 'REPORTS' && (
+        <>
+          {/* Report Summary Card with LIVE Data */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between pb-3 border-b border-slate-800 gap-3">
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Monthly Executive Summary</span>
@@ -124,6 +159,8 @@ export const ReportsAnalyticsPillarView: React.FC<{ project: ProjectIdentity }> 
           </div>
         </div>
       </div>
+      </>
+      )}
 
       {/* MODAL: PRINTABLE STATUTORY MONTHLY REPORT */}
       {showPrintModal && (

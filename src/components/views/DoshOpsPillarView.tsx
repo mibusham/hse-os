@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { 
   FileCheck, CheckCircle2, 
   Clock, AlertTriangle, Plus, 
-  Layers, HardHat, Trash2, XCircle, RefreshCw, Calendar, Save, Check
+  Layers, HardHat, Trash2, XCircle, RefreshCw, Calendar, Save, Check,
+  Tractor, Anchor, Wrench
 } from 'lucide-react';
 import type { ProjectIdentity, PTWRecord, InspectionRecord, ManHoursLog } from '../../types/core';
 import { ProjectService } from '../../services/projectService';
+import { DailySafetyWalkView } from './operational/DailySafetyWalkView';
+import { MachineryHeavyPlantView } from './operational/MachineryHeavyPlantView';
+import { LiftingGearView } from './operational/LiftingGearView';
+import { HandPowerToolsView } from './operational/HandPowerToolsView';
 
 export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ project }) => {
-  const [activeTab, setActiveTab] = useState<'PTW' | 'INSPECTIONS' | 'MANHOURS'>('PTW');
+  const [activeTab, setActiveTab] = useState<'PTW' | 'DAILY_WALK' | 'MACHINERY' | 'LIFTING_GEAR' | 'HAND_TOOLS' | 'INSPECTIONS' | 'MANHOURS'>('PTW');
+
 
   // 1. PTW State & Persistence
   const [ptwList, setPtwList] = useState<PTWRecord[]>(() => {
@@ -205,7 +211,11 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
         {[
           { id: 'PTW', label: 'Permit To Work (PTW)', count: ptwList.length, icon: FileCheck },
-          { id: 'INSPECTIONS', label: '7-Day Inspection (OSHA 2022)', count: inspectionList.length, icon: Layers },
+          { id: 'DAILY_WALK', label: 'Daily Safety Walk & Findings', count: null, icon: AlertTriangle },
+          { id: 'MACHINERY', label: 'Plant & Heavy Machinery (PMA)', count: null, icon: Tractor },
+          { id: 'LIFTING_GEAR', label: 'Lifting Gear & Color Tags', count: null, icon: Anchor },
+          { id: 'HAND_TOOLS', label: 'Hand Power Tools', count: null, icon: Wrench },
+          { id: 'INSPECTIONS', label: '7-Day Scaffold Inspection', count: inspectionList.length, icon: Layers },
           { id: 'MANHOURS', label: 'Safe Man-Hours (A×B×C=D)', count: manHoursLogs.length, icon: Clock },
         ].map(tab => {
           const Icon = tab.icon;
@@ -598,6 +608,18 @@ export const DoshOpsPillarView: React.FC<{ project?: ProjectIdentity }> = ({ pro
           </div>
         </div>
       )}
+
+      {/* TAB 4: DAILY SAFETY WALK */}
+      {activeTab === 'DAILY_WALK' && <DailySafetyWalkView project={project} />}
+
+      {/* TAB 5: PLANT & MACHINERY */}
+      {activeTab === 'MACHINERY' && <MachineryHeavyPlantView project={project} />}
+
+      {/* TAB 6: LIFTING GEAR */}
+      {activeTab === 'LIFTING_GEAR' && <LiftingGearView project={project} />}
+
+      {/* TAB 7: HAND POWER TOOLS */}
+      {activeTab === 'HAND_TOOLS' && <HandPowerToolsView project={project} />}
 
       {/* MODAL: ISSUE NEW PTW */}
       {showNewPtwModal && (
