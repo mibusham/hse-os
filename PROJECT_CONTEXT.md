@@ -102,3 +102,23 @@ Semua fungsi statutori kini telah dihidupkan sepenuhnya (100% Operational) dan d
 7. **Navigasi Terhubung (`App.tsx` & `ExecutiveMatrixView`)**
    - Klik mana-mana kad modul sintesis AI atau amaran Action Radar terus membuka pilar statutori yang berkenaan.
 
+---
+
+## 4. Inovasi & Automasi Terkini (8 Oktober 2026 - Kemas Kini Petang)
+
+### A. Autonomous Real-Time Watchdog & Dynamic Site Health Score
+- **Pengawasan Masa-Nyata (Heartbeat 2.5s):** `HSECoreEngine.runAutonomousAudit` kini beroperasi sebagai pengawas tapak pintar berterusan yang mengimbas data operasi merentas 5 Pilar Statutori.
+- **Kalkulasi Site Health Score Dinamik (0-100%):** Skor bermula pada 100%, dipotong secara automatik bagi setiap pelanggaran statutori (-15% untuk CRITICAL, -5% untuk WARNING).
+- **Penunjuk Nadi Visual Pintar:** Lencana CPU dan denyutan pada `CoreBrainHeader` bertukar warna secara automatik:
+  - 🟢 **Optimal (85% - 100%)**: Status selamat.
+  - 🟡 **Elevated Risk (60% - 84%)**: Amaran pencegahan aktif.
+  - 🔴 **Critical Stop Work (<60%)**: Amaran henti kerja mandatori OSHA 2022 Seksyen 15.
+
+### B. Core AI Trade Specialist Copilot (Daftar Subkontraktor - Pillar 5)
+- **Dialog AI Interaktif Dalam Borang (*In-Context AI Chat*):**
+  - Pengguna boleh berinteraksi terus dengan Core AI di dalam modal pendaftaran subkontraktor (`CorporateSubconPillarView`) sekiranya skop kerja tapak tiada dalam pilihan piawai.
+  - **Pemadanan Pintar Statutori:** Core memadankan huraian kerja santai pengguna (cth: pasang solar, bore piling, turap jalan premix, lif, fasad kaca, kalis air dsb.) kepada kod pengkhususan rasmi CIDB (cth: E11, CE01, CE02, M03, B04, B28), kategori risiko KKP, dan cadangan gred minimum CIDB.
+  - **Auto-Injection & Auto-Select 1-Klik:** Pengguna hanya klik butang `+ Sahkan & Cipta Skop Ini`, dan Core akan serta-merta mendaftar skop baharu tersebut ke dalam senarai dropdown, memilihnya secara automatik, dan menyelaraskan gred CIDB yang disyorkan.
+  - Senarai skop baharu disimpan secara kekal dalam profil tapak projek.
+
+
