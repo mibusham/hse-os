@@ -62,8 +62,60 @@ export interface AICoreAdvisory {
   pillar: 'DOSH' | 'CDM' | 'DOE' | 'HEALTH' | 'CORPORATE';
   title: string;
   description: string;
-  statutoryReference: string; // e.g. "BOWEC Reg. 74", "CDM 2024 Reg. 8"
+  statutoryReference: string; // e.g. "OSHA 1994 (2022) Sec. 29", "CDM 2024 Reg. 8"
   suggestedAction: string;
   actionRoute?: string;
   timestamp: string;
 }
+
+export interface PTWRecord {
+  id: string;
+  ptwNo: string;
+  activityType: 'HOT_WORK' | 'WORKING_AT_HEIGHT' | 'LIFTING' | 'EXCAVATION' | 'CONFINED_SPACE' | 'ELECTRICAL';
+  locationZone: string;
+  subcontractor: string;
+  startDate: string;
+  validUntil: string;
+  status: 'ACTIVE' | 'EXPIRED' | 'PENDING_APPROVAL' | 'CLOSED';
+  authorizedBy: string;
+  riskPrecautions: string[];
+  createdAt?: string;
+}
+
+export interface InspectionRecord {
+  id: string;
+  itemType: 'SCAFFOLDING_FRAME' | 'MOBILE_CRANE_BACKHOE' | 'ELECTRICAL_DB' | 'ROOF_SAFETY_LINE' | 'SILT_TRAP_ESCP';
+  tagNo: string;
+  location: string;
+  inspectorName: string;
+  lastInspectionDate: string;
+  nextDueDate: string;
+  status: 'SAFE_GREEN_TAG' | 'REJECT_RED_TAG' | 'PENDING_CHECK';
+  remarks?: string;
+}
+
+export interface SubcontractorRecord {
+  id: string;
+  name: string;
+  scope: string;
+  cidbGrade: string;
+  cidbExp: string;
+  carInsuranceValid: boolean;
+  carPolicyNo: string;
+  carExpiryDate: string;
+  greenCardCompliance: string;
+  workersCount: number;
+  status: 'APPROVED' | 'PENDING_DOCS' | 'SUSPENDED';
+}
+
+export interface ManHoursLog {
+  id: string;
+  monthYear: string;
+  workerCount: number;
+  workDays: number;
+  hoursPerDay: number;
+  totalMonthlyManHours: number;
+  cumulativeManHours: number;
+  ltiCount: number;
+}
+

@@ -68,7 +68,37 @@
 
 ---
 
-## 3. Langkah Seterusnya Untuk Sesi Akan Datang (Roadmap)
-1. **Form Input Interaktif untuk Subkontraktor:** Menyediakan borang pendaftaran terus subkontraktor dan muat naik polisi insurans CAR ke Google Cloud Storage.
-2. **Eksport Dokumen Rasmi PDF:** Menjana fail PDF rasmi Borang JKKP 103 berserta kepala surat (letterhead) kontraktor utama untuk diserahkan ke Pejabat DOSH Negeri Pulau Pinang.
-3. **Penyimpanan Gambar Pemeriksaan Tapak:** Mengaktifkan Firebase Storage untuk membolehkan jurutera/SHO mengambil gambar keadaan tapak (Green/Red Tag) terus dari kamera telefon pintar.
+## 3. Pengaktifan Penuh Fungsi Interaktif (8 Oktober 2026)
+Semua fungsi statutori kini telah dihidupkan sepenuhnya (100% Operational) dan disambungkan ke pangkalan data Google Cloud Firestore & storan luar talian:
+
+1. **Pillar 1: DOSH Statutory & Site Ops (`DoshOpsPillarView`)**
+   - **Permit To Work (PTW) Digital:** Borang keluarkan PTW baharu, butang kawalan permit (Tutup Permit, Batal / Stop Work, Aktifkan Semula), dan penjejakan masa sah.
+   - **Pemeriksaan 7-Hari Berkanun (OSHA 2022):** Borang daftar tag pemeriksaan perancah, jentera & loji; fungsi tukar status Green Tag (Safe) / Red Tag (Stop Work) secara langsung.
+   - **Safe Man-Hours Logger:** Pengiraan automatik formula A × B × C = D dengan butang simpan lejar bulanan terkumpul.
+
+2. **Pillar 2: CDM 2024 Governance Studio (`CdmStudioPillarView`)**
+   - **Borang JKKP 103 (PDF / Cetakan Rasmi):** Modal paparan statutori rasmi berformat kepala surat JKKP sedia untuk dicetak (`window.print()`) dan diserahkan ke Pejabat DOSH Negeri Pulau Pinang.
+   - **Direktori Pemegang Amanah (Duty Holders):** Borang kemas kini pelantikan Klien (Reg. 4), PCWD (Reg. 6), PCWC (Reg. 10), dan SHO Seksyen 29 dengan nombor pendaftaran badan profesional.
+   - **Dossier PCI & CPP:** Senarai semak interaktif dengan bar peratusan kemajuan fail keselamatan.
+
+3. **Pillar 3: DOE / JAS Environment & ESCP (`DoeEnvPillarView`)**
+   - **Log Ujian Air TSS:** Borang kemas kini bacaan TSS (mg/L), pH, dan kekeruhan NTU kolam silt trap dengan amaran automatik had 50 mg/L JAS.
+   - **Kawalan Wash Trough:** Butang suis status pam jet basuh tayar (Online Auto / Maintenance).
+   - **e-SWIS Buangan Berjadual:** Borang daftar buangan berjadual (SW 305/SW 306/SW 409/SW 410) dengan pengiraan had 180 hari.
+
+4. **Pillar 4: Health, CLQ & Welfare Suite (`HealthWelfarePillarView`)**
+   - **Kawalan Vektor Aedes (Akta 130):** Log semburan thermal fogging dan abate larviciding dengan meter kitaran 14-hari automatik.
+   - **Heat Stress Index (WBGT):** Slider suhu interaktif dengan pengkelasan risiko automatik (Normal / Waspada / Bahaya) dan panduan rehat berkanun.
+   - **CLQ Akta 446:** Kawalan kapasiti pekerja dan perakuan penginapan JTKSM.
+
+5. **Pillar 5: Corporate & Subcontractor Vetting (`CorporateSubconPillarView`)**
+   - **Pendaftaran Subkontraktor Baharu:** Borang pendaftaran syarikat, pengkhususan skop kerja, gred CIDB G1-G7, polisi insurans CAR, tarikh luput, dan bilangan pekerja berkad hijau.
+   - **Status Saringan:** Butang tukar status kelulusan (Approved / Pending Docs).
+
+6. **Analytics & Statutory Reports (`ReportsAnalyticsPillarView`)**
+   - Menggabungkan data masa-nyata dari semua pilar (Man-hours, PTWs, Inspections, Subcontractors, Kualiti Air TSS).
+   - Penjana Laporan Bulanan SHO rasmi lengkap dengan butang cetak PDF berkanun.
+
+7. **Navigasi Terhubung (`App.tsx` & `ExecutiveMatrixView`)**
+   - Klik mana-mana kad modul sintesis AI atau amaran Action Radar terus membuka pilar statutori yang berkenaan.
+

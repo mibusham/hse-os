@@ -66,6 +66,25 @@ export const App: React.FC = () => {
   const modules = HSECoreEngine.synthesizeModules(project);
   const advisories = HSECoreEngine.generateDayOneAdvisories(project);
 
+  const handleSelectModule = (modId: string) => {
+    setSelectedModule(modId);
+    const mod = modules.find(m => m.id === modId);
+    if (!mod) return;
+    if (mod.category === 'SAFETY') setActivePillar('dosh_ops');
+    else if (mod.category === 'CDM') setActivePillar('cdm_studio');
+    else if (mod.category === 'ENVIRONMENT') setActivePillar('doe_env');
+    else if (mod.category === 'HEALTH') setActivePillar('health_welfare');
+    else if (mod.category === 'GOVERNANCE') setActivePillar('corporate_subcon');
+  };
+
+  const handleActionClick = (adv: any) => {
+    if (adv.pillar === 'DOSH') setActivePillar('dosh_ops');
+    else if (adv.pillar === 'CDM') setActivePillar('cdm_studio');
+    else if (adv.pillar === 'DOE') setActivePillar('doe_env');
+    else if (adv.pillar === 'HEALTH') setActivePillar('health_welfare');
+    else if (adv.pillar === 'CORPORATE') setActivePillar('corporate_subcon');
+  };
+
   return (
     <div className="h-screen bg-slate-950 text-slate-100 flex overflow-hidden font-sans selection:bg-emerald-500 selection:text-black">
       
@@ -101,7 +120,7 @@ export const App: React.FC = () => {
             <ExecutiveMatrixView
               project={project}
               modules={modules}
-              onSelectModule={(modId) => setSelectedModule(modId)}
+              onSelectModule={handleSelectModule}
             />
           )}
 
@@ -135,9 +154,7 @@ export const App: React.FC = () => {
       {/* 3. Zone Right: The Action Radar & Live Audit Pane */}
       <ActionRadarPane
         advisories={advisories}
-        onActionClick={(advisory) => {
-          alert(`Core Action: ${advisory.suggestedAction}\nStatutory: ${advisory.statutoryReference}`);
-        }}
+        onActionClick={handleActionClick}
       />
 
     </div>

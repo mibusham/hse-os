@@ -123,4 +123,32 @@ export class ProjectService {
   static clearLocalProject(): void {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   }
+
+  /**
+   * Helper to load and save generic data collections (PTW, Inspections, Subcons, etc.)
+   */
+  static loadData<T>(key: string, defaultValue: T): T {
+    try {
+      const stored = localStorage.getItem(`hse_os_${key}`);
+      if (stored) return JSON.parse(stored);
+    } catch (e) {
+      console.warn(`[ProjectService] Failed to load data for ${key}:`, e);
+    }
+    return defaultValue;
+  }
+
+  static async saveData<T>(key: string, data: T, projectId?: string): Promise<void> {
+    try {
+      localStorage.setItem(`hse_os_${key}`, JSON.stringify(data));
+      
+      // Also sync to Firestore project subdocument if projectId exists
+      if (projectId) {
+        const docRef = doc(db, COLLECTION_PROJECTS, projectId, 'operational_data', key);
+        await setDoc(docRef, { data, updatedAt: serverTimestamp() }, { merge: true });
+      }
+    } catch (e) {
+      console.warn(`[ProjectService] Saved locally, remote sync error for ${key}:`, e);
+    }
+  }
 }
+
