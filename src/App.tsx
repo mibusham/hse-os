@@ -20,6 +20,17 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activePillar, setActivePillar] = useState<NavPillarId>('overview');
   const [, setSelectedModule] = useState<string | null>(null);
+  const [coreAudit, setCoreAudit] = useState<{
+    advisories: any[];
+    complianceScore: number;
+    statusLevel: 'OPTIMAL' | 'ELEVATED_RISK' | 'CRITICAL_STOP_WORK';
+    lastScanTimestamp: string;
+  }>({
+    advisories: [],
+    complianceScore: 100,
+    statusLevel: 'OPTIMAL',
+    lastScanTimestamp: new Date().toISOString(),
+  });
 
   // Load project on mount from Supabase Cloud / local cache
   useEffect(() => {
@@ -28,6 +39,7 @@ export const App: React.FC = () => {
         const { project: loadedProject } = await ProjectService.loadActiveProject();
         if (loadedProject) {
           setProject(loadedProject);
+          setCoreAudit(HSECoreEngine.runAutonomousAudit(loadedProject));
         }
       } catch (e) {
         console.error('Failed to load project:', e);
@@ -38,9 +50,19 @@ export const App: React.FC = () => {
     initProject();
   }, []);
 
+  // Continuous Heartbeat: Scans site operational datasets every 2.5 seconds
+  useEffect(() => {
+    if (!project) return;
+    const interval = setInterval(() => {
+      setCoreAudit(HSECoreEngine.runAutonomousAudit(project));
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [project, activePillar]);
+
   const handleProjectComplete = async (newProject: ProjectIdentity) => {
     await ProjectService.saveProject(newProject);
     setProject(newProject);
+    setCoreAudit(HSECoreEngine.runAutonomousAudit(newProject));
   };
 
   if (isLoading) {
@@ -48,7 +70,7 @@ export const App: React.FC = () => {
       <div className="h-screen bg-slate-950 flex flex-col items-center justify-center gap-4 text-slate-100 font-sans">
         <div className="w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin" />
         <p className="text-xs font-mono text-emerald-400 uppercase tracking-widest">
-          Connecting to Google Cloud Firestore...
+          Connecting to Cloud Core...
         </p>
       </div>
     );
@@ -64,19 +86,6 @@ export const App: React.FC = () => {
   }
 
   const modules = HSECoreEngine.synthesizeModules(project);
-
-  // Real-Time Autonomous Site Watchdog Core Audit State
-  const [coreAudit, setCoreAudit] = useState(() => HSECoreEngine.runAutonomousAudit(project));
-
-  // Continuous Heartbeat: Scans site operational datasets every 2.5 seconds
-  useEffect(() => {
-    if (!project) return;
-    const interval = setInterval(() => {
-      setCoreAudit(HSECoreEngine.runAutonomousAudit(project));
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [project, activePillar]);
-
   const advisories = coreAudit.advisories;
 
   const handleSelectModule = (modId: string) => {

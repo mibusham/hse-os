@@ -190,6 +190,15 @@ export class HSECoreEngine {
     const advisories: AICoreAdvisory[] = [];
     const timestamp = new Date().toISOString();
 
+    if (!project) {
+      return {
+        advisories: [],
+        complianceScore: 100,
+        statusLevel: 'OPTIMAL',
+        lastScanTimestamp: timestamp,
+      };
+    }
+
     // Load data from liveData or localStorage fallback
     let ptws = liveData?.ptws;
     let inspections = liveData?.inspections;
@@ -316,13 +325,13 @@ export class HSECoreEngine {
     }
 
     // 6. PILLAR 2 CDM 2024 AUDIT: Regulation 8 Notification Check
-    if (project.isReg8Notifiable) {
+    if (project?.isReg8Notifiable) {
       advisories.push({
         id: 'adv-cdm-reg8',
         severity: 'CRITICAL',
         pillar: 'CDM',
         title: 'Notis Wajib Peraturan 8 (Borang JKKP 103)',
-        description: `Projek melebihi ambang berkanun (${project.estimatedPersonDays.toLocaleString()} person-days). Draf Borang JKKP 103 wajib dicetak dan diserahkan ke Pejabat DOSH Negeri Pulau Pinang sebelum kerja pembinaan fizikal bermula.`,
+        description: `Projek melebihi ambang berkanun (${(project.estimatedPersonDays || 0).toLocaleString()} person-days). Draf Borang JKKP 103 wajib dicetak dan diserahkan ke Pejabat DOSH Negeri Pulau Pinang sebelum kerja pembinaan fizikal bermula.`,
         statutoryReference: 'Peraturan 8 CDM 2024 • Seksyen 34B OSHA 1994',
         suggestedAction: 'Buka Pillar 2 & cetak PDF rasmi Borang JKKP 103',
         actionRoute: 'cdm_studio',
