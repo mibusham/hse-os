@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { 
   Sparkles, Layers, ArrowRight, 
-  CheckCircle2, Cpu
+  CheckCircle2, Cpu, Database
 } from 'lucide-react';
 import type { ProjectIdentity, ProjectScope } from '../types/core';
 import { HSECoreEngine } from '../services/HSECoreEngine';
+import { ProjectService } from '../services/projectService';
 
 interface ProjectInceptionWizardProps {
   onComplete: (project: ProjectIdentity) => void;
@@ -107,6 +108,42 @@ export const ProjectInceptionWizard: React.FC<ProjectInceptionWizardProps> = ({ 
               <p className="text-xs text-slate-300 leading-relaxed">
                 <strong className="text-white">Core Insight:</strong> Provide statutory project parameters below. The HSE OS Core Engine will analyze these specifications to synthesize statutory compliance modules for DOSH, DOE, CDM 2024, and generate Day-1 proactive alerts.
               </p>
+            </div>
+
+            {/* Quick Load Everine Live Site Data Button */}
+            <div className="bg-gradient-to-r from-emerald-950/40 via-slate-900 to-teal-950/40 border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                  <Database size={20} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                    <span>Everine Eco Sun Ph2 Live Data</span>
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">204 Workers + Full History</span>
+                  </h4>
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    Instantly load 204 inducted workers, PTWs, rain gauge logs, subcontractors &amp; scaffolds without typing.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                disabled={isSaving}
+                onClick={async () => {
+                  setIsSaving(true);
+                  try {
+                    const evr = await ProjectService.initializeWithEverineData();
+                    await onComplete(evr);
+                  } finally {
+                    setIsSaving(false);
+                  }
+                }}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shrink-0 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer"
+              >
+                <Sparkles size={15} />
+                <span>Quick Load Everine</span>
+              </button>
             </div>
 
             {/* Scope Selector */}

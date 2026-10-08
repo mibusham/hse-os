@@ -176,6 +176,11 @@ export const App: React.FC = () => {
           onReconfigure={() => setProject(null)}
           onOpenMobileMenu={() => setIsMobileDrawerOpen(true)}
           onOpenRadar={() => setIsRadarSheetOpen(true)}
+          onSyncEverine={async () => {
+            const evr = await ProjectService.initializeWithEverineData();
+            setProject(evr);
+            setCoreAudit(HSECoreEngine.runAutonomousAudit(evr));
+          }}
           activeHazardsCount={advisories.length}
           complianceScore={coreAudit.complianceScore}
           statusLevel={coreAudit.statusLevel}

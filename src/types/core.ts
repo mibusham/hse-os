@@ -291,4 +291,33 @@ export interface IncidentRecord {
   status: 'INVESTIGATING' | 'CLOSED';
 }
 
+export interface RainGaugeEntry {
+  id: string;
+  date: string;
+  amountMm: number;
+  recordedBy: string;
+  status: 'NORMAL' | 'HEAVY_RAIN_ALERT' | 'STOP_WORK_CRITICAL';
+}
+
+export interface ChemicalItem {
+  id: string;
+  name: string;
+  supplier: string;
+  hazardClass: 'Flammable' | 'Toxic' | 'Corrosive' | 'Irritant' | 'Environmental Hazard' | string;
+  storageLocation: string;
+  maxQuantity: string;
+  sdsAvailable: boolean;
+  ppeRequired?: string;
+}
+
+export interface FoggingRecord {
+  id: string;
+  date: string;
+  chemical: string;
+  contractor: string;
+  area: string;
+  nextDueDate: string;
+  status: 'COMPLETED';
+}
+
 

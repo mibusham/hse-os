@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Cpu, CloudRain, Thermometer, 
-  Sparkles, Settings, Menu, Bell
+  Sparkles, Settings, Menu, Bell, RefreshCw
 } from 'lucide-react';
 import type { ProjectIdentity } from '../../types/core';
 
@@ -10,6 +10,7 @@ interface CoreBrainHeaderProps {
   onReconfigure: () => void;
   onOpenMobileMenu?: () => void;
   onOpenRadar?: () => void;
+  onSyncEverine?: () => void;
   activeHazardsCount?: number;
   complianceScore?: number;
   statusLevel?: 'OPTIMAL' | 'ELEVATED_RISK' | 'CRITICAL_STOP_WORK';
@@ -20,10 +21,12 @@ export const CoreBrainHeader: React.FC<CoreBrainHeaderProps> = ({
   onReconfigure,
   onOpenMobileMenu,
   onOpenRadar,
+  onSyncEverine,
   activeHazardsCount = 0,
   complianceScore = 100,
   statusLevel = 'OPTIMAL',
 }) => {
+  const [isSyncing, setIsSyncing] = useState(false);
   return (
     <header className="bg-slate-900 border-b border-slate-800 px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3 sticky top-0 z-30 shadow-md">
       
@@ -131,6 +134,27 @@ export const CoreBrainHeader: React.FC<CoreBrainHeaderProps> = ({
             {activeHazardsCount}
           </span>
         </button>
+
+        {/* Sync Everine Cloud Data Trigger */}
+        {onSyncEverine && (
+          <button
+            type="button"
+            disabled={isSyncing}
+            onClick={async () => {
+              setIsSyncing(true);
+              try {
+                await onSyncEverine();
+              } finally {
+                setIsSyncing(false);
+              }
+            }}
+            className="p-1.5 sm:p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 transition-colors flex items-center gap-1.5 cursor-pointer"
+            title="Re-sync Everine 204 Workers & Historical Data"
+          >
+            <RefreshCw size={15} className={isSyncing ? 'animate-spin' : ''} />
+            <span className="text-[10px] font-bold hidden xl:inline">Sync Everine</span>
+          </button>
+        )}
 
         {/* Reconfigure Trigger */}
         <button

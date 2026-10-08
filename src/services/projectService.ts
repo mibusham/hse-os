@@ -4,6 +4,17 @@ import {
   query, orderBy, limit, serverTimestamp 
 } from 'firebase/firestore';
 import type { ProjectIdentity } from '../types/core';
+import { 
+  EVERINE_PROJECT_IDENTITY, 
+  EVERINE_WORKERS, 
+  EVERINE_SUBCONTRACTORS, 
+  EVERINE_PTW_LIST, 
+  EVERINE_INSPECTIONS, 
+  EVERINE_RAIN_GAUGE, 
+  EVERINE_CHEMICALS, 
+  EVERINE_FOGGING_RECORDS, 
+  EVERINE_MANPOWER_HISTORY 
+} from '../data/everineSeedData';
 
 const LOCAL_STORAGE_KEY = 'hse_os_active_project';
 const COLLECTION_PROJECTS = 'hse_os_projects';
@@ -114,7 +125,48 @@ export class ProjectService {
       console.error('[ProjectService] Failed to read localStorage', e);
     }
 
-    return { project: null, source: 'none' };
+    // Default to Everine live project with 204 workers & full site dataset
+    const autoEverine = await this.initializeWithEverineData();
+    return { project: autoEverine, source: 'local' };
+  }
+
+  /**
+   * One-click seed function to load all 204 Everine workers, PTWs,
+   * inspections, rain gauge and daily manpower records into HSE OS.
+   */
+  static async initializeWithEverineData(): Promise<ProjectIdentity> {
+    const project = EVERINE_PROJECT_IDENTITY;
+    await this.saveProject(project);
+
+    // Seed local cache for instant zero-latency view
+    localStorage.setItem('hse_os_site_workers_directory', JSON.stringify(EVERINE_WORKERS));
+    localStorage.setItem('hse_os_subcontractors_list', JSON.stringify(EVERINE_SUBCONTRACTORS));
+    localStorage.setItem('hse_os_ptw_list', JSON.stringify(EVERINE_PTW_LIST));
+    localStorage.setItem('hse_os_inspections_list', JSON.stringify(EVERINE_INSPECTIONS));
+    localStorage.setItem('hse_os_doe_rain_gauge', JSON.stringify(EVERINE_RAIN_GAUGE));
+    localStorage.setItem('hse_os_doe_chemical_register', JSON.stringify(EVERINE_CHEMICALS));
+    localStorage.setItem('hse_os_doe_vector_control', JSON.stringify(EVERINE_FOGGING_RECORDS));
+    localStorage.setItem('hse_os_health_fogging_list', JSON.stringify(EVERINE_FOGGING_RECORDS));
+    localStorage.setItem('hse_os_daily_manpower_history', JSON.stringify(EVERINE_MANPOWER_HISTORY));
+
+    // Also persist collections into Firestore in background
+    try {
+      await Promise.all([
+        this.saveData('site_workers_directory', EVERINE_WORKERS, project.id),
+        this.saveData('subcontractors_list', EVERINE_SUBCONTRACTORS, project.id),
+        this.saveData('ptw_list', EVERINE_PTW_LIST, project.id),
+        this.saveData('inspections_list', EVERINE_INSPECTIONS, project.id),
+        this.saveData('doe_rain_gauge', EVERINE_RAIN_GAUGE, project.id),
+        this.saveData('doe_chemical_register', EVERINE_CHEMICALS, project.id),
+        this.saveData('doe_vector_control', EVERINE_FOGGING_RECORDS, project.id),
+        this.saveData('health_fogging_list', EVERINE_FOGGING_RECORDS, project.id),
+        this.saveData('daily_manpower_history', EVERINE_MANPOWER_HISTORY, project.id),
+      ]);
+    } catch (e) {
+      console.warn('[ProjectService] Background Firestore sync for Everine:', e);
+    }
+
+    return project;
   }
 
   /**
@@ -134,6 +186,17 @@ export class ProjectService {
     } catch (e) {
       console.warn(`[ProjectService] Failed to load data for ${key}:`, e);
     }
+
+    // Auto-fallback to live Everine datasets if key matches and no user override exists
+    if (key === 'site_workers_directory') return (EVERINE_WORKERS as unknown) as T;
+    if (key === 'subcontractors_list') return (EVERINE_SUBCONTRACTORS as unknown) as T;
+    if (key === 'ptw_list') return (EVERINE_PTW_LIST as unknown) as T;
+    if (key === 'inspections_list') return (EVERINE_INSPECTIONS as unknown) as T;
+    if (key === 'doe_rain_gauge') return (EVERINE_RAIN_GAUGE as unknown) as T;
+    if (key === 'doe_chemical_register') return (EVERINE_CHEMICALS as unknown) as T;
+    if (key === 'doe_vector_control' || key === 'health_fogging_list') return (EVERINE_FOGGING_RECORDS as unknown) as T;
+    if (key === 'daily_manpower_history') return (EVERINE_MANPOWER_HISTORY as unknown) as T;
+
     return defaultValue;
   }
 
