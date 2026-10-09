@@ -9,7 +9,7 @@ const getApiKey = (): string => {
   return (
     import.meta.env.VITE_GEMINI_API_KEY ||
     (typeof process !== 'undefined' && process.env?.API_KEY) ||
-    'AIzaSyDDkgN4aYB1xCLBgzY3tOXqX53juN1I9i0'
+    'AIzaSyC0GFSI24-Icy4PiPI1lXSUy04riKR1CzE'
   );
 };
 
